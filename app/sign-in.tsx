@@ -27,7 +27,7 @@ export default function SignIn() {
             justifyContent: 'space-between',
           }}
         >
-          {/* Dummy view to push the next view to the center. */}
+          {/* Dummy view to push the next view to the center. */}my p
           <View />
           <View style={{ alignItems: 'center', gap: 16 }}>
             <AppText type="title">{AppConfig.name}</AppText>
