@@ -10,6 +10,7 @@ import { View } from 'react-native'
 import { useTrackLocations } from '@/hooks/use-track-locations'
 import { AppSplashController } from '@/components/app-splash-controller'
 import { useAuth } from '@/components/auth/auth-provider'
+import Toast from 'react-native-toast-message'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -47,6 +48,7 @@ export default function RootLayout() {
         <AppSplashController />
         <RootNavigator />
         <StatusBar style="auto" />
+        <Toast />
       </AppProviders>
       <PortalHost />
     </View>
