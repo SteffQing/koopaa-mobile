@@ -1,50 +1,71 @@
-# Welcome to your Expo app 👋
+# 📱 KooPaa Mobile — Ajo Savings on Solana
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**KooPaa** is a decentralized savings protocol inspired by Africa’s communal savings system — *Ajo*, *Esusu*, *Tontine*, etc. This mobile client brings KooPaa to the Solana Mobile ecosystem, enabling trustless group savings, wallet-native interactions, and seamless payouts — all in your pocket.
 
-## Get started
+---
 
-1. Install dependencies
+## 🧠 Background
 
-   ```bash
-   npm install
-   ```
+KooPaa reimagines traditional savings groups for the blockchain age, removing the need for a central coordinator. With KooPaa:
+- Groups are transparent
+- Contributions are tracked on-chain
+- Payouts are automated
+- Members can join using just a wallet
 
-2. Start the app
+This mobile app complements the [KooPaa Web App](https://github.com/your-org/koopaa-web), and interacts directly with the [KooPaa Solana Anchor Program](https://github.com/your-org/koopaa-anchor).
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🚀 Features
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- 🔐 Wallet-native login (Solana Mobile dApp browser / mobile wallet connect)
+- 👥 Create and join savings groups
+- 💸 Contribute to your group on-chain
+- 🧾 View group history and upcoming payouts
+- 📆 Track savings duration and progress
+- 🔔 Get notified when it's your payout turn
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 📦 Tech Stack
 
-When you're ready, run:
+- **Framework**: React Native + Expo 
+- **Blockchain**: Solana + Anchor
+- **Wallet**: Solana Mobile Wallet Adapter, Backpack / Phantom / other wallet integrations
+- **API**: Optional backend services (e.g., Neon + Prisma, for metadata)
+
+---
+
+## 🛠 Setup
 
 ```bash
-npm run reset-project
+git clone https://github.com/your-org/koopaa-mobile-app.git
+cd koopaa-mobile-app
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Ensure you're on:
 
-## Learn more
+Node.js v18+
 
-To learn more about developing your project with Expo, look at the following resources:
+Expo CLI installed globally (npm i -g expo-cli)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+A Solana Mobile-compatible wallet for testing
 
-## Join the community
+📄 Contracts
+This app interacts with the deployed Anchor Program:
 
-Join our community of developers creating universal apps.
+Repo: koopaa-anchor
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Program ID: koopaa...replace_this...id
+
+💡 Inspiration
+Millions rely on communal savings for survival. KooPaa makes it secure, automated, and transparent — no more defaulting collectors, no more invisible books. Just pure trust through code.
+
+🏆 Solana Mobile Hackathon Submission
+This repo is part of our submission for the Solana Mobile App Hackathon. We’re building fast and shipping real.
+
+✨ Contributors
+
+@steffqing — Mobile Lead
