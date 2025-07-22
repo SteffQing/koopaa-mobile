@@ -1,17 +1,17 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
-import { Link, usePathname } from 'expo-router'
+import Account from '@/assets/svgs/navigation/account.svg'
 import Home from '@/assets/svgs/navigation/home.svg'
 import Savings from '@/assets/svgs/navigation/savings.svg'
 import Squads from '@/assets/svgs/squad.svg'
-import Account from '@/assets/svgs/navigation/account.svg'
+import { Link, usePathname } from 'expo-router'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 
 const tabs = [
   { name: 'Home', icon: Home, path: '/' },
   { name: 'Savings', icon: Savings, path: '/savings' },
   { name: 'Squads', icon: Squads, path: '/squads' },
   { name: 'Account', icon: Account, path: '/account' },
-]
+] as const
 
 const bottomNavbarStyle = StyleSheet.create({
   container: {
@@ -66,7 +66,7 @@ const BottomNavbar: React.FC = () => {
           <Link href={tab.path} key={tab.name} asChild>
             <TouchableOpacity onPressIn={handlePressIn} onPressOut={handlePressOut}>
               <Animated.View style={[bottomNavbarStyle.tab, tabStyle]}>
-                <Icon width={24} height={24} style={{ color: isActive ? '#FF6B00' : '#767676' }} />
+                <Icon width={24} height={24} fill={isActive ? '#FF6B00' : '#767676'} />
                 <Text style={[bottomNavbarStyle.tabText, isActive && bottomNavbarStyle.tabTextActive]}>{tab.name}</Text>
               </Animated.View>
             </TouchableOpacity>

@@ -1,12 +1,12 @@
-import { StyleSheet, View } from 'react-native'
-import Header from './Navigation/Header'
-import SavingsAndWallet from '@/components/savings-and-wallet'
-import SquadDisplay from '@/components/squads'
 import ActionItems from '@/components/action-items'
 import RecentActivities from '@/components/activities'
-import QuickAccess from './quick-access'
-import { useAuthUser } from '@/hooks/useUser'
+import SavingsAndWallet from '@/components/savings-and-wallet'
+import SquadDisplay from '@/components/squads'
 import { useGetActivities } from '@/hooks/db/useActivities'
+import { useAuthUser } from '@/hooks/useUser'
+import { StyleSheet, View } from 'react-native'
+import Header from '../Navigation/header'
+import QuickAccess from './quick-access'
 
 const homePageStyle = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: '#FCFCFC' },

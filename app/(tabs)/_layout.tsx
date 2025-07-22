@@ -1,4 +1,4 @@
-import { UiIconSymbol } from '@/components/ui copy/ui-icon-symbol'
+import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { Tabs } from 'expo-router'
 import React from 'react'
 

@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from 'react-native'
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
-import { Avatar } from '@/components/Avatar'
+import { Avatar } from '@/components/avatar'
 
 interface HeaderProps {
   name?: string | null

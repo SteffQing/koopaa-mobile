@@ -1,34 +1,38 @@
 import Bolt from '@/assets/svgs/bolt.svg'
-import { Link } from 'expo-router'
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
+
+import myGroupsImg from '@/assets/quick-access/my-groups.png'
+import privateGroupImg from '@/assets/quick-access/private-group.png'
+import publicGroupImg from '@/assets/quick-access/public-group.png'
+import soloImg from '@/assets/quick-access/solo.png'
 
 const items = [
   {
     title: 'My Groups',
-    image: require('@/assets/public/quick-access/my-groups.png'),
+    image: myGroupsImg,
     color: '#D3D0FF',
     href: '/squads',
   },
   {
     title: 'Create Solo Savings',
-    image: require('@/assets/public/quick-access/solo.png'),
+    image: soloImg,
     color: '#B6DEC6',
     href: '/savings',
   },
   {
     title: 'Create Ajo Group',
-    image: require('@/assets/public/quick-access/public-group.png'),
+    image: publicGroupImg,
     color: '#FEC1BE',
     href: '/savings/ajo',
   },
   {
     title: 'Create Private Group',
-    image: require('@/assets/public/quick-access/private-group.png'),
+    image: privateGroupImg,
     color: '#C2BBFF',
     href: '/savings',
   },
-]
+] as const
 
 const quickAccessStyle = StyleSheet.create({
   container: { marginBottom: 16 },
@@ -78,12 +82,12 @@ const QuickAccess: React.FC = () => {
                 { backgroundColor: item.color, borderColor: item.color },
               ]}
             >
-              <Link href={item.href} asChild>
-                <TouchableOpacity>
-                  <Image source={item.image} style={quickAccessStyle.image} />
-                  <Text style={quickAccessStyle.text}>{item.title}</Text>
-                </TouchableOpacity>
-              </Link>
+              {/* <Link href={item.href} asChild> */}
+              <TouchableOpacity>
+                <Image source={item.image} style={quickAccessStyle.image} />
+                <Text style={quickAccessStyle.text}>{item.title}</Text>
+              </TouchableOpacity>
+              {/* </Link> */}
             </Animated.View>
           )
         })}

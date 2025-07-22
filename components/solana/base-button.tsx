@@ -1,6 +1,6 @@
 import { AppText } from '@/components/app-text'
 import { useWalletUiTheme } from '@/components/solana/use-wallet-ui-theme'
-import { UiIconSymbol } from '@/components/ui copy/ui-icon-symbol'
+import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 
