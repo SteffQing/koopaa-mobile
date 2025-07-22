@@ -3,6 +3,7 @@ import { StyleSheet, useColorScheme, View, ViewProps } from 'react-native'
 import SkeletonActivity from './activities'
 import InvitationModalSkeleton from './invite-modal'
 import LoadingDots from './loading-dots'
+import Spinner from './spinner'
 
 const skeletonStyle = StyleSheet.create({
   container: {
@@ -17,4 +18,4 @@ const Skeleton: React.FC<ViewProps> = ({ style, ...props }) => {
   return <View style={[skeletonStyle.container, { backgroundColor: theme.skeletonBackground }, style]} {...props} />
 }
 
-export { InvitationModalSkeleton, LoadingDots, Skeleton, SkeletonActivity }
+export { InvitationModalSkeleton, LoadingDots, Skeleton, SkeletonActivity, Spinner }

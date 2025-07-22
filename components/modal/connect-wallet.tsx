@@ -1,9 +1,9 @@
-import { useColorScheme, StyleSheet, View, Text, TouchableOpacity, Image, Linking } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
-import { useEffect } from 'react'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { Button } from '@/components/ui/button' // Assume this is your React Native Button component
+import { Button } from '@/components/ui'
 import getTheme from '@/constants/theme'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { useEffect } from 'react'
+import { Image, Linking, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 const connectWalletModalStyle = StyleSheet.create({
   container: {
@@ -104,7 +104,8 @@ const ConnectWalletModal: React.FC = () => {
         <Button
           onPress={disconnect}
           variant="destructive"
-          style={{ backgroundColor: theme.destructive, color: '#FFFFFF' }}
+          style={{ backgroundColor: theme.destructive }}
+          textStyle={{ color: '#FFFFFF' }}
         >
           Disconnect Wallet
         </Button>
@@ -162,7 +163,8 @@ const ConnectWalletModal: React.FC = () => {
             <Animated.View style={buttonAnimatedStyle}>
               <Button
                 onPress={() => Linking.openURL('https://solana.com/ecosystem/wallets')}
-                style={{ borderColor: theme.gray300, backgroundColor: theme.cardBackground, color: theme.textPrimary }}
+                style={{ borderColor: theme.gray300, backgroundColor: theme.cardBackground }}
+                textStyle={{ color: theme.textPrimary }}
               >
                 Get a Wallet
               </Button>

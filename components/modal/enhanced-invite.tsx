@@ -1,15 +1,15 @@
-import { useColorScheme, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, withDelay } from 'react-native-reanimated'
-import { useEffect } from 'react'
-import { useRouter } from 'expo-router'
-import { useModal } from '@/providers/modal-provider'
-import { Avatar } from '@/components/avatar' // Assume this is your React Native Avatar component
-import { Button } from '@/components/ui/button' // Assume this is your React Native Button component
-import useParticipant from '@/hooks/db/useParticipant'
-import { InvitationModalSkeleton } from '../skeletons'
-import useJoinAjoGroup from '@/hooks/blockchain/write/useJoinAjoGroup'
-import { Svg, Path } from 'react-native-svg'
+import { Avatar } from '@/components/avatar'
+import { Button } from '@/components/ui/'
 import getTheme from '@/constants/theme'
+import useJoinAjoGroup from '@/hooks/blockchain/write/useJoinAjoGroup'
+import useParticipant from '@/hooks/db/useParticipant'
+import { useModal } from '@/providers/modal-provider'
+import { useRouter } from 'expo-router'
+import { useEffect } from 'react'
+import { StyleSheet, Text, useColorScheme, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
+import { Path, Svg } from 'react-native-svg'
+import { InvitationModalSkeleton } from '../skeletons'
 
 interface InvitationModalProps {
   inviter: string
@@ -218,7 +218,8 @@ const EnhancedInvitationModal: React.FC<InvitationModalProps> = ({ inviter, grou
               <Button
                 onPress={handleAccept}
                 disabled={loading || isPending}
-                style={{ backgroundColor: theme.orange, color: '#FFFFFF' }}
+                style={{ backgroundColor: theme.orange }}
+                textStyle={{ color: '#FFF' }}
               >
                 Accept Invitation
               </Button>
@@ -228,7 +229,8 @@ const EnhancedInvitationModal: React.FC<InvitationModalProps> = ({ inviter, grou
                 variant="outline"
                 onPress={handleDecline}
                 disabled={loading || isPending}
-                style={{ borderColor: theme.gray300, backgroundColor: theme.gray50, color: theme.textPrimary }}
+                style={{ borderColor: theme.gray300, backgroundColor: theme.gray50 }}
+                textStyle={{ color: theme.textPrimary }}
               >
                 Decline
               </Button>

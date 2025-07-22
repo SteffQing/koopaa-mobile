@@ -1,14 +1,11 @@
-import { useColorScheme, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
-import { useEffect } from 'react'
-import { useModal } from '@/providers/modal-provider'
-import { useRouter } from 'expo-router'
-import { toast } from 'react-native-toast-message'
-import { Svg, Circle } from 'react-native-svg'
 import getTheme from '@/constants/theme'
-import ChevronRight from '@/assets/svgs/chevron-right.svg'
-import Globe from '@/assets/svgs/globe.svg'
-import Lock from '@/assets/svgs/lock.svg'
+import { useModal } from '@/providers/modal-provider'
+import { Feather } from '@expo/vector-icons'
+import { useRouter } from 'expo-router'
+import { useEffect } from 'react'
+import { StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import Toast from 'react-native-toast-message'
 
 const groupTargetModalStyle = StyleSheet.create({
   container: {
@@ -106,7 +103,7 @@ const GroupTargetModal: React.FC = () => {
             <View style={groupTargetModalStyle.colorGrid}>
               <View style={[groupTargetModalStyle.colorDot, { backgroundColor: theme.green }]} />
               <View style={[groupTargetModalStyle.colorDot, { backgroundColor: theme.progressGradientStart }]} />
-              <View style={[groupTargetModalStyle.colorDot, { backgroundColor: '#FBBF24' }]} /> {/* yellow-400 */}
+              <View style={[groupTargetModalStyle.colorDot, { backgroundColor: '#FBBF24' }]} />
               <View style={[groupTargetModalStyle.colorDot, { backgroundColor: theme.purpleGradientStart }]} />
             </View>
           </View>
@@ -129,7 +126,7 @@ const GroupTargetModal: React.FC = () => {
         >
           <View style={groupTargetModalStyle.cardContent}>
             <View style={[groupTargetModalStyle.cardIconWrapper, { backgroundColor: theme.gray100 }]}>
-              <Globe width={24} height={24} />
+              <Feather name="globe" size={24} />
             </View>
             <View>
               <Text style={[groupTargetModalStyle.cardTitle, { color: theme.textPrimary }]}>Create an Ajo group</Text>
@@ -138,7 +135,7 @@ const GroupTargetModal: React.FC = () => {
               </Text>
             </View>
           </View>
-          <ChevronRight width={20} height={20} fill={theme.textSecondary} />
+          <Feather name="chevron-right" size={20} color={theme.textSecondary} />
         </TouchableOpacity>
       </Animated.View>
       <Animated.View
@@ -152,12 +149,15 @@ const GroupTargetModal: React.FC = () => {
           style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}
           onPress={() => {
             hideModal()
-            toast.info('Individual Savings is coming soon...')
+            Toast.show({
+              type: 'info',
+              text1: 'Individual Savings is coming soon...',
+            })
           }}
         >
           <View style={groupTargetModalStyle.cardContent}>
             <View style={[groupTargetModalStyle.cardIconWrapper, { backgroundColor: theme.gray100 }]}>
-              <Lock width={24} height={24} />
+              <Feather name="lock" size={24} />
             </View>
             <View>
               <Text style={[groupTargetModalStyle.cardTitle, { color: theme.textPrimary }]}>
@@ -168,7 +168,8 @@ const GroupTargetModal: React.FC = () => {
               </Text>
             </View>
           </View>
-          <ChevronRight width={20} height={20} fill={theme.textSecondary} />
+
+          <Feather name="chevron-right" size={20} color={theme.textSecondary} />
         </TouchableOpacity>
       </Animated.View>
     </View>

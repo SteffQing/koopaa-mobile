@@ -1,14 +1,9 @@
 import { claimSOL, claimUSDC } from '@/actions/faucet'
 import SOL from '@/assets/coins/solana.png'
 import USDC from '@/assets/coins/usdc.png'
-import AlertCircle from '@/assets/svgs/alert-circle.svg' // Assume you have this SVG
-import CheckCircle from '@/assets/svgs/check-circle.svg' // Assume you have this SVG
-import ChevronDown from '@/assets/svgs/chevron-down.svg' // Assume you have this SVG
-import Droplets from '@/assets/svgs/droplets.svg' // Assume you have this SVG
 import Refresh from '@/assets/svgs/refresh.svg'
 import { FormattedBalance } from '@/components/savings-and-wallet/card' // Assume this is your React Native component
-import { Button } from '@/components/ui/button' // Assume this is your React Native Button component
-import { Checkbox } from '@/components/ui/checkbox'
+import { Button, Checkbox } from '@/components/ui'
 import getTheme from '@/constants/theme'
 import useFaucetBalance, { useATA } from '@/hooks/blockchain/useFaucet'
 import { useTransactionToast } from '@/hooks/use-transaction-toast'
@@ -16,10 +11,12 @@ import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useSession } from '@/hooks/useSession'
 import query from '@/lib/fetch'
 import { useModal } from '@/providers/modal-provider'
+import { Feather } from '@expo/vector-icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native'
-import { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated'
+import Toast from 'react-native-toast-message'
+import { Spinner } from '../skeletons'
 
 interface Claim {
   claimedUSDC: boolean
@@ -39,14 +36,6 @@ const faucetBalanceStyle = StyleSheet.create({
   headerText: {
     fontSize: 18,
     fontWeight: '600',
-  },
-  spinner: {
-    width: 16,
-    height: 16,
-    borderWidth: 2,
-    borderColor: '#FF6B00', // theme.orange
-    borderTopColor: 'transparent',
-    borderRadius: 8,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -75,14 +64,6 @@ const FaucetBalance: React.FC = () => {
   const { data, isLoading, refetch } = useFaucetBalance()
   const [isBalanceCollapsed, setIsBalanceCollapsed] = useState(true)
 
-  const spinnerRotation = useSharedValue(0)
-  const spinnerAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${spinnerRotation.value}deg` }],
-  }))
-  useEffect(() => {
-    spinnerRotation.value = withRepeat(withTiming(360, { duration: 1000 }), -1)
-  }, [])
-
   return (
     <View style={faucetBalanceStyle.container}>
       <View style={faucetBalanceStyle.header}>
@@ -91,15 +72,16 @@ const FaucetBalance: React.FC = () => {
           onPress={() => setIsBalanceCollapsed(!isBalanceCollapsed)}
         >
           <Text style={[faucetBalanceStyle.headerText, { color: theme.textPrimary }]}>Faucet Balance</Text>
-          <ChevronDown
-            width={16}
-            height={16}
+
+          <Feather
+            name="chevron-down"
+            size={16}
             style={{ transform: [{ rotate: isBalanceCollapsed ? '-90deg' : '0deg' }] }}
           />
         </TouchableOpacity>
         {!isBalanceCollapsed && (
           <Button variant="ghost" onPress={() => refetch()} disabled={isLoading} style={{ padding: 4 }}>
-            <Refresh width={16} height={16} style={isLoading ? spinnerAnimatedStyle : {}} />
+            <Refresh width={16} height={16} />
           </Button>
         )}
       </View>
@@ -107,7 +89,7 @@ const FaucetBalance: React.FC = () => {
         <>
           {isLoading ? (
             <View style={{ alignItems: 'center' }}>
-              <View style={[faucetBalanceStyle.spinner, spinnerAnimatedStyle]} />
+              <Spinner />
             </View>
           ) : data ? (
             <View style={faucetBalanceStyle.cardContainer}>
@@ -266,7 +248,10 @@ const FaucetModal: React.FC = () => {
         },
       }),
     onSuccess: (response, txHashes) => {
-      toast.success(response.message)
+      Toast.show({
+        type: 'success',
+        text1: response.message,
+      })
       const [solHash, usdcHash] = txHashes
       if (solHash) transactionToast(solHash)
       if (usdcHash) transactionToast(usdcHash)
@@ -276,7 +261,10 @@ const FaucetModal: React.FC = () => {
   const handleClaim = async () => {
     const { sol, usdc } = selectedTokens
     if (!usdc && !sol) {
-      toast.error('Please select at least one token to claim')
+      Toast.show({
+        type: 'error',
+        text1: 'Please select at least one token to claim',
+      })
       return
     }
     const to = session!
@@ -290,10 +278,16 @@ const FaucetModal: React.FC = () => {
       ])
       hideModal()
       showFaucetGiftIcon(false)
-      toast.info('Faucet can always be accessed from the Top up button of your Wallet and Savings card!')
+      Toast.show({
+        type: 'info',
+        text1: 'Faucet can always be accessed from the Top up button of your Wallet and Savings card!',
+      })
     } catch (error) {
       console.error('Error claiming tokens:', error)
-      toast.error('Failed to claim tokens')
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to claim tokens',
+      })
     } finally {
       setClaiming(false)
     }
@@ -303,7 +297,7 @@ const FaucetModal: React.FC = () => {
     <View style={faucetModalStyle.container}>
       <View style={faucetModalStyle.header}>
         <View style={[faucetModalStyle.iconWrapper, { backgroundColor: theme.orangeGradientStart }]}>
-          <Droplets width={32} height={32} fill="#FFFFFF" />
+          <Feather name="droplet" size={32} color="white" />
         </View>
         <Text style={[faucetModalStyle.title, { color: theme.textPrimary }]}>KooPaa Solana Faucet</Text>
         <Text style={[faucetModalStyle.subtitle, { color: theme.textSecondary }]}>
@@ -313,7 +307,7 @@ const FaucetModal: React.FC = () => {
       <FaucetBalance />
       {isLoading ? (
         <View style={{ padding: 24, alignItems: 'center' }}>
-          <View style={[faucetBalanceStyle.spinner, { animation: 'spin 1s linear infinite' }]} />
+          <Spinner />
           <Text style={{ color: theme.textSecondary }}>Checking claim status...</Text>
         </View>
       ) : data && data.claimedSOL && data.claimedUSDC ? (
@@ -323,7 +317,7 @@ const FaucetModal: React.FC = () => {
             { backgroundColor: theme.greenLight, borderColor: theme.green, borderWidth: 1 },
           ]}
         >
-          <CheckCircle width={48} height={48} fill={theme.green} />
+          <Feather name="check-circle" size={48} color={theme.green} />
           <Text style={[faucetModalStyle.claimedTitle, { color: theme.greenDark }]}>Already Claimed!</Text>
           <Text style={[faucetModalStyle.claimedText, { color: theme.green }]}>
             You have already claimed tokens from this faucet. Each wallet can only claim once.
@@ -386,8 +380,8 @@ const FaucetModal: React.FC = () => {
               </View>
             </View>
           </View>
-          <View style={[faucetModalStyle.alertSection, { backgroundColor: theme.amber, color: theme.amberDark }]}>
-            <AlertCircle width={18} height={18} fill={theme.amberDark} />
+          <View style={[faucetModalStyle.alertSection, { backgroundColor: theme.amber }]}>
+            <Feather name="alert-circle" size={18} color={theme.amberDark} />
             <Text style={{ fontSize: 14, color: theme.amberDark }}>
               Each wallet address can only claim either tokens, once. Make sure your wallet is connected to receive the
               tokens.
