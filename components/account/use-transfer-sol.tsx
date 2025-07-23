@@ -1,8 +1,8 @@
-import { PublicKey, TransactionSignature } from '@solana/web3.js'
-import { useConnection } from '@/components/solana/solana-provider'
-import { useMutation } from '@tanstack/react-query'
-import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import { createTransaction } from '@/components/account/create-transaction'
+import { useWalletUi } from '@/components/solana/use-wallet-ui'
+import { useConnection } from '@/providers/solana-provider'
+import { PublicKey, TransactionSignature } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { useGetBalanceInvalidate } from './use-get-balance'
 
 export function useTransferSol({ address }: { address: PublicKey }) {
