@@ -13,7 +13,7 @@ export interface ClusterProviderContext {
 
 const Context = createContext<ClusterProviderContext>({} as ClusterProviderContext)
 
-export function ClusterProvider({ children }: { children: ReactNode }) {
+export default function ClusterProvider({ children }: { children: ReactNode }) {
   const [selectedCluster, setSelectedCluster] = useState<Cluster>(AppConfig.clusters[0])
   const value: ClusterProviderContext = useMemo(
     () => ({

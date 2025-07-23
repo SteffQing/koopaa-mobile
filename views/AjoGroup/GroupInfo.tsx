@@ -1,96 +1,115 @@
-import { GetAvatar } from "@/components/avatar";
-import { formatDate, formatDateTS } from "@/lib/date";
-import { getPosition } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { GetAvatar } from '@/components/avatar'
+import { formatDate, formatDateTS } from '@/lib/date'
+import { getPosition } from '@/lib/numbers'
+import { Feather } from '@expo/vector-icons'
+import { Link } from 'expo-router'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
-const item = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0 },
-};
-
-interface Props {
-  payoutRound: number;
-  payoutInterval: number;
-  contributionInterval: number;
-  contributionAmount: number;
-  pda: string;
-  participants: string[];
-  createdAt: Date;
-  startTimestamp: null | number;
-  disabled?: boolean;
+interface GroupInfoProps {
+  payoutRound: number
+  payoutInterval: number
+  contributionInterval: number
+  contributionAmount: number
+  pda: string
+  participants: string[]
+  createdAt: Date
+  startTimestamp: null | number
+  disabled?: boolean
 }
 
-export default function GroupInfo(props: Props) {
-  const participantsCount = props.participants.length;
-  const participantsShown = props.participants.slice(0, 3);
+const groupInfoStyle = StyleSheet.create({
+  gridContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 16, marginBottom: 24 },
+  gridItem: {
+    backgroundColor: '#FCFCFC',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#CBD5E1',
+    width: '47%',
+  },
+  text: { fontSize: 14, color: '#6B7280', marginBottom: 4 },
+  value: { fontSize: 16, fontWeight: '500', color: '#121212' },
+  membersContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
+  avatars: { flexDirection: 'row', marginLeft: -8 },
+  moreText: { fontSize: 14, marginRight: 4 },
+})
+
+const GroupInfo: React.FC<GroupInfoProps> = (props) => {
+  const participantsCount = props.participants.length
+  const participantsShown = props.participants.slice(0, 3)
+  const opacity = useSharedValue(0)
+  const y = useSharedValue(10)
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }))
+
+  opacity.value = withTiming(1, { duration: 300 })
+  y.value = withTiming(0, { duration: 300 })
+
   return (
     <>
-      <motion.div variants={item} className="grid grid-cols-2 gap-4 mb-4">
-        <div className="bg-[#FCFCFC] rounded-xl p-4 border border-[#CBD5E1]">
-          <p className="text-sm text-gray-500 mb-1">Creation Date</p>
-          <p className="font-medium">{formatDate(props.createdAt)}</p>
-        </div>
-        <div className="bg-[#FCFCFC] rounded-xl p-4 border border-[#CBD5E1]">
-          <p className="text-sm text-gray-500 mb-1">Start Date</p>
-          <p className="font-medium">
-            {props.startTimestamp
-              ? formatDateTS(props.startTimestamp)
-              : "Not yet!"}
-          </p>
-        </div>
-      </motion.div>
-
-      <motion.div variants={item} className="grid grid-cols-2 gap-4 mb-4">
-        <div className="bg-[#FCFCFC] rounded-xl p-4 border border-[#CBD5E1]">
-          <p className="text-sm text-gray-500 mb-1">Contribution Amount</p>
-          <p className="font-medium">{props.contributionAmount} USDC</p>
-        </div>
-        <div className="bg-[#FCFCFC] rounded-xl p-4 border border-[#CBD5E1]">
-          <p className="text-sm text-gray-500 mb-1">Contribution interval</p>
-          <p className="font-medium">{props.contributionInterval} days</p>
-        </div>
-      </motion.div>
-      <motion.div variants={item} className="grid grid-cols-2 gap-4 mb-4">
-        <div className="bg-[#FCFCFC] rounded-xl p-4 border border-[#CBD5E1]">
-          <p className="text-sm text-gray-500 mb-1">Payout Round</p>
-          <p className="font-medium">
-            {getPosition(props.payoutRound + 1)} round
-          </p>
-        </div>
-        <div className="bg-[#FCFCFC] rounded-xl p-4 border border-[#CBD5E1]">
-          <p className="text-sm text-gray-500 mb-1">Payout interval</p>
-          <p className="font-medium">{props.payoutInterval} days</p>
-        </div>
-      </motion.div>
-
-      <motion.div variants={item} className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-[#FCFCFC] rounded-xl p-4 border border-[#CBD5E1]">
-          <p className="text-sm text-gray-500 mb-1">Group Type</p>
-          <p className="font-medium">Public Group</p>
-        </div>
-        <Link
-          href={props.disabled ? "#" : `/savings/ajo/${props.pda}/participants`}
-        >
-          <div className="bg-white rounded-xl p-4 h-full flex flex-col justify-between">
-            <p className="text-sm text-gray-500 mb-1">Group Members</p>
-            <div className="flex items-center justify-between">
-              <div className="flex -space-x-2">
-                {participantsShown.map((address, idx) => (
-                  <GetAvatar address={address} size={24} key={idx + address} />
-                ))}
-              </div>
-              <div className="flex items-center">
-                <span className="text-sm mr-1">
-                  {participantsCount > 3 ? `+ ${participantsCount - 3}` : ""}
-                </span>
-                <ChevronRight size={16} className="text-gray-400" />
-              </div>
-            </div>
-          </div>
+      <Animated.View style={[groupInfoStyle.gridContainer, animatedStyle]}>
+        <View style={groupInfoStyle.gridItem}>
+          <Text style={groupInfoStyle.text}>Creation Date</Text>
+          <Text style={groupInfoStyle.value}>{formatDate(props.createdAt)}</Text>
+        </View>
+        <View style={groupInfoStyle.gridItem}>
+          <Text style={groupInfoStyle.text}>Start Date</Text>
+          <Text style={groupInfoStyle.value}>
+            {props.startTimestamp ? formatDateTS(props.startTimestamp) : 'Not yet!'}
+          </Text>
+        </View>
+      </Animated.View>
+      <Animated.View style={[groupInfoStyle.gridContainer, animatedStyle]}>
+        <View style={groupInfoStyle.gridItem}>
+          <Text style={groupInfoStyle.text}>Contribution Amount</Text>
+          <Text style={groupInfoStyle.value}>{props.contributionAmount} USDC</Text>
+        </View>
+        <View style={groupInfoStyle.gridItem}>
+          <Text style={groupInfoStyle.text}>Contribution interval</Text>
+          <Text style={groupInfoStyle.value}>{props.contributionInterval} days</Text>
+        </View>
+      </Animated.View>
+      <Animated.View style={[groupInfoStyle.gridContainer, animatedStyle]}>
+        <View style={groupInfoStyle.gridItem}>
+          <Text style={groupInfoStyle.text}>Payout Round</Text>
+          <Text style={groupInfoStyle.value}>{getPosition(props.payoutRound + 1)} round</Text>
+        </View>
+        <View style={groupInfoStyle.gridItem}>
+          <Text style={groupInfoStyle.text}>Payout interval</Text>
+          <Text style={groupInfoStyle.value}>{props.payoutInterval} days</Text>
+        </View>
+      </Animated.View>
+      <Animated.View style={[groupInfoStyle.gridContainer, animatedStyle]}>
+        <View style={groupInfoStyle.gridItem}>
+          <Text style={groupInfoStyle.text}>Group Type</Text>
+          <Text style={groupInfoStyle.value}>Public Group</Text>
+        </View>
+        <Link href={props.disabled ? '#' : `/savings/ajo/${props.pda}/participants`} asChild>
+          <TouchableOpacity disabled={props.disabled}>
+            <View style={[groupInfoStyle.gridItem, { borderWidth: 0 }]}>
+              <Text style={groupInfoStyle.text}>Group Members</Text>
+              <View style={groupInfoStyle.membersContainer}>
+                <View style={groupInfoStyle.avatars}>
+                  {participantsShown.map((address, idx) => (
+                    <GetAvatar address={address} size={24} key={idx + address} />
+                  ))}
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={groupInfoStyle.moreText}>
+                    {participantsCount > 3 ? `+ ${participantsCount - 3}` : ''}
+                  </Text>
+                  <Feather name="chevron-right" size={16} color="#9CA3AF" />
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>
         </Link>
-      </motion.div>
+      </Animated.View>
     </>
-  );
+  )
 }
+
+export default GroupInfo

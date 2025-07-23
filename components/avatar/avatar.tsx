@@ -1,6 +1,6 @@
-import { StyleSheet, View, Image } from 'react-native'
-import { useColorScheme } from 'react-native'
 import getTheme from '@/constants/theme'
+import useParticipant from '@/hooks/db/useParticipant'
+import { Image, StyleSheet, useColorScheme, View } from 'react-native'
 
 // Import avatar images using require (adjust paths if needed)
 const avatarImage: Record<number, any> = {
@@ -65,3 +65,8 @@ const Avatar: React.FC<AvatarProps> = ({ number = 1, size = 40 }) => {
 }
 
 export default Avatar
+
+export const GetAvatar = ({ address, size = 40 }: { address: string; size: number }) => {
+  const { data } = useParticipant(address)
+  return <Avatar number={data?.data?.avatar} size={size} />
+}

@@ -58,8 +58,10 @@
     "js-base64": "^3.7.7",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-hook-form": "^7.60.0",
     "react-native": "0.79.5",
     "react-native-gesture-handler": "~2.24.0",
+    "react-native-linear-gradient": "^2.8.3",
     "react-native-modal": "^14.0.0-rc.1",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
@@ -69,7 +71,9 @@
     "react-native-toast-message": "^2.3.3",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
-    "react-qr-code": "^2.0.16"
+    "react-qr-code": "^2.0.16",
+    "undefined": "@hookform/resolvers/zod",
+    "zod": "^4.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

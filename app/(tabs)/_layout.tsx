@@ -1,33 +1,34 @@
-import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
-import { Tabs } from 'expo-router'
-import React from 'react'
+import BottomNavbar from '@/views/Navigation/navigation'
+import { Slot } from 'expo-router'
+import { StyleSheet, View } from 'react-native'
+// import AuthGuard from './AuthGuard'
+// import Faucet from "@/components/faucet";
+import Telegram from '@/components/telegram'
+
+// export default function MobileLayout({ children }: Readonly<{ children: ReactNode }>) {
+//   return (
+//     <Suspense fallback={<SplashScreen />}>
+//       {/* <AuthGuard> */}
+//       {children}
+//       <BottomNavbar />
+//       {/* <Faucet /> */}
+//       <Telegram />
+//       {/* </AuthGuard> */}
+//     </Suspense>
+
+//   )
+// }
+
+const layoutStyle = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F2F2F2' },
+})
 
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
-      {/* The index redirects to the account screen */}
-      <Tabs.Screen name="index" options={{ tabBarItemStyle: { display: 'none' } }} />
-      <Tabs.Screen
-        name="account"
-        options={{
-          title: 'Account',
-          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="wallet.pass.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="gearshape.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="demo"
-        options={{
-          title: 'Demo',
-          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="ladybug.fill" color={color} />,
-        }}
-      />
-    </Tabs>
+    <View style={layoutStyle.container}>
+      <Slot />
+      <BottomNavbar />
+      <Telegram />
+    </View>
   )
 }

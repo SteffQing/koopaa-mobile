@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
-import { StyleSheet, View, TouchableOpacity, Keyboard } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSpring } from 'react-native-reanimated'
-import Modal from 'react-native-modal'
-import { createContext, useContext } from 'react'
-import getTheme from '@/constants/theme'
 import XIcon from '@/assets/svgs/x.svg'
+import getTheme from '@/constants/theme'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native'
+import Modal from 'react-native-modal'
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 
 type ModalContextType = {
   showModal: (content: React.ReactNode, options?: ModalOptions) => void
@@ -63,7 +62,7 @@ const modalProviderStyle = StyleSheet.create({
   },
 })
 
-export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [modalContent, setModalContent] = useState<React.ReactNode | null>(null)
   const [isOpen, setIsOpen] = useState(false)
   const [options, setOptions] = useState<ModalOptions>(defaultOptions)
@@ -142,3 +141,5 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     </ModalContext.Provider>
   )
 }
+
+export default ModalProvider

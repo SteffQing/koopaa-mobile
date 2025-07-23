@@ -1,60 +1,71 @@
-import { SavingsData } from "@/components/savings-and-wallet/types";
-import { motion } from "framer-motion";
+import type { SavingsData } from '@/components/savings-and-wallet/types'
+import { Image, StyleSheet, Text, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
-import Solo from "@/assets/quick-access/solo.png";
-import PublicGroup from "@/assets/quick-access/public-group.png";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
-
-type Props = {
-  savingsData: [SavingsData, SavingsData];
-};
-
-export default function Savings({ savingsData }: Props) {
-  return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 20 },
-        show: { opacity: 1, y: 0 },
-      }}
-      className="mt-6 mb-6"
-    >
-      <h2 className="font-medium text-[#121212] text-sm mb-3">Savings</h2>
-
-      <div className="bg-[#FCFCFC] rounded-[8px] overflow-hidden px-4">
-        {savingsData.map((item, index) => (
-          <div
-            key={index}
-            className="py-4 flex justify-between items-center border-b border-[#E6E6E6] last:border-b-0"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full relative overflow-hidden">
-                <Image
-                  src={item.type === "individual" ? Solo : PublicGroup}
-                  alt={item.type}
-                  className="object-cover"
-                  fill
-                />
-              </div>
-              <p className="font-medium text-[#2E2E2E] text-sm">
-                {item.type === "individual"
-                  ? "Individual Savings"
-                  : "My Ajo Savings"}
-              </p>
-            </div>
-            <div
-              className={cn(
-                "py-1 px-2 rounded-[8px]",
-                item.amount > 0 && "text-[#008B05] bg-[#E5FFDF]"
-              )}
-            >
-              <span className="font-normal text-sm">
-                ${item.amount.toLocaleString()}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </motion.div>
-  );
+interface SavingsProps {
+  savingsData: [SavingsData, SavingsData]
 }
+
+const savingsStyle = StyleSheet.create({
+  container: { marginVertical: 24 },
+  title: { fontSize: 14, fontWeight: '500', color: '#121212', marginBottom: 12 },
+  card: { backgroundColor: '#FCFCFC', borderRadius: 8, paddingHorizontal: 16 },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E6E6E6',
+  },
+  lastRow: { borderBottomWidth: 0 },
+  content: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  image: { width: 32, height: 32, borderRadius: 16 },
+  text: { fontSize: 14, fontWeight: '500', color: '#2E2E2E' },
+  amountContainer: { paddingVertical: 4, paddingHorizontal: 8, borderRadius: 8 },
+  positiveAmount: { backgroundColor: '#E5FFDF', color: '#008B05' },
+  amountText: { fontSize: 14 },
+})
+
+const Savings: React.FC<SavingsProps> = ({ savingsData }) => {
+  const opacity = useSharedValue(0)
+  const y = useSharedValue(20)
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }))
+
+  opacity.value = withTiming(1, { duration: 300 })
+  y.value = withTiming(0, { duration: 300 })
+
+  return (
+    <Animated.View style={[savingsStyle.container, animatedStyle]}>
+      <Text style={savingsStyle.title}>Savings</Text>
+      <View style={savingsStyle.card}>
+        {savingsData.map((item, index) => (
+          <View key={index} style={[savingsStyle.row, index === savingsData.length - 1 ? savingsStyle.lastRow : {}]}>
+            <View style={savingsStyle.content}>
+              <Image
+                source={
+                  item.type === 'individual'
+                    ? require('@/assets/public/quick-access/solo.png')
+                    : require('@/assets/public/quick-access/public-group.png')
+                }
+                style={savingsStyle.image}
+                resizeMode="cover"
+              />
+              <Text style={savingsStyle.text}>
+                {item.type === 'individual' ? 'Individual Savings' : 'My Ajo Savings'}
+              </Text>
+            </View>
+            <View style={[savingsStyle.amountContainer, item.amount > 0 ? savingsStyle.positiveAmount : {}]}>
+              <Text style={savingsStyle.amountText}>${item.amount.toLocaleString()}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </Animated.View>
+  )
+}
+
+export default Savings

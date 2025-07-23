@@ -1,6 +1,7 @@
-import React from 'react'
-import { Redirect } from 'expo-router'
+"use client";
 
-export default function TabsIndexScreen() {
-  return <Redirect href="/(tabs)/account" />
+import HomePage from "@/views/Home";
+
+export default function Home() {
+  return <HomePage />;
 }

@@ -33,7 +33,7 @@ function useSignInMutation() {
   })
 }
 
-export function AuthProvider({ children }: PropsWithChildren) {
+export default function AuthProvider({ children }: PropsWithChildren) {
   const { disconnect } = useMobileWallet()
   const { accounts, isLoading } = useAuthorization()
   const signInMutation = useSignInMutation()

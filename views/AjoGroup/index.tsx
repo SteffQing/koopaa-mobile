@@ -1,22 +1,22 @@
-import { AjoGroupData } from "@/hooks/blockchain/read/classes";
-import GroupSavingsCard from "./Card";
-import { useAuthUser } from "@/hooks/useUser";
-import { useMemo } from "react";
-import { Info, NextSavingDate } from "./UserInfo";
-import GroupInfo from "./GroupInfo";
-import UserGroupActivities from "./Activities";
-import { GroupInfoSkeleton, GroupSavingsCardSkeleton, NextSavingDateSkeleton } from "./Skeleton";
+import { AjoGroupData } from '@/hooks/blockchain/read/classes'
+import { useAuthUser } from '@/hooks/useUser'
+import { useMemo } from 'react'
+import UserGroupActivities from './Activities'
+import { GroupSavingsCard } from './Card'
+import GroupInfo from './GroupInfo'
+import { GroupInfoSkeleton, GroupSavingsCardSkeleton, NextSavingDateSkeleton } from './Skeleton'
+import { Info, NextSavingDate } from './UserInfo'
 
 interface Props {
-  id: string;
-  data: AjoGroupData | undefined;
-  loading: boolean;
-  disabled?: boolean;
+  id: string
+  data: AjoGroupData | undefined
+  loading: boolean
+  disabled?: boolean
 }
 
 export default function AjoGroup({ data, id, loading, disabled }: Props) {
-  const { user } = useAuthUser();
-  const you = useMemo(() => data?.youParticipant(user?.address), [user?.address, data]);
+  const { user } = useAuthUser()
+  const you = useMemo(() => data?.youParticipant(user?.address), [user?.address, data])
 
   return (
     <>
@@ -44,7 +44,7 @@ export default function AjoGroup({ data, id, loading, disabled }: Props) {
         slots={data ? Math.max(0, data.numParticipants - data.participants.length) : 0}
         pda={id}
         isParticipant={Boolean(you)}
-        name={data?.name ?? ""}
+        name={data?.name ?? ''}
         fee={data?.securityDeposit ?? 0}
       />
       {loading || !data ? (
@@ -69,5 +69,5 @@ export default function AjoGroup({ data, id, loading, disabled }: Props) {
       )}
       <UserGroupActivities pda={id} />
     </>
-  );
+  )
 }

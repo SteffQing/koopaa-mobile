@@ -1,30 +1,67 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
+import { Link } from 'expo-router'
+import { Feather } from '@expo/vector-icons'
+import Profile from '@/assets/svgs/account/security-support/profile.svg'
 import { VariantProps } from './types'
-import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
-import Profile from '@/assets/svgs/account/profile.svg'
 
-export const PersonalSection = ({ item }: VariantProps) => {
+interface PersonalSectionProps extends VariantProps {
+  item?: { hidden: { opacity: number; y: number }; show: { opacity: number; y: number } }
+}
+
+const personalSectionStyle = StyleSheet.create({
+  container: { marginBottom: 24 },
+  title: { fontSize: 14, fontWeight: '500', color: '#333333', marginBottom: 12 },
+  card: {
+    backgroundColor: '#FCFCFC',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  inner: { paddingHorizontal: 12 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12 },
+  content: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  iconContainer: { backgroundColor: '#DADADA', padding: 6, borderRadius: 14 },
+  text: { fontSize: 12, color: '#121212' },
+  chevron: { color: '#9CA3AF' },
+})
+
+const PersonalSection: React.FC<PersonalSectionProps> = ({ item }) => {
+  const opacity = useSharedValue(item?.hidden.opacity ?? 0)
+  const y = useSharedValue(item?.hidden.y ?? 20)
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }))
+
+  opacity.value = withTiming(item?.show.opacity ?? 1, { duration: 300 })
+  y.value = withTiming(item?.show.y ?? 0, { duration: 300 })
+
   return (
-    <motion.div variants={item}>
-      <h2 className="font-medium text-sm text-[#333333] mb-3">Personal</h2>
-
-      <div className="bg-[#FCFCFC] rounded-[8px] overflow-hidden box-shadow">
-        <div className="px-3">
-          <Link href="/account/profile">
-            <div className="flex justify-between items-center py-3">
-              <div className="flex items-center gap-2">
-                <div className="bg-[#DADADA] p-[6px] rounded-[14px]">
-                  <Profile />
-                </div>
-                <span className="font-normal text-[#121212] text-xs">Profile details</span>
-              </div>
-              <ChevronRight size={20} className="text-gray-400" />
-            </div>
+    <Animated.View style={[personalSectionStyle.container, animatedStyle]}>
+      <Text style={personalSectionStyle.title}>Personal</Text>
+      <View style={personalSectionStyle.card}>
+        <View style={personalSectionStyle.inner}>
+          <Link href="/account/profile" asChild>
+            <TouchableOpacity>
+              <View style={personalSectionStyle.row}>
+                <View style={personalSectionStyle.content}>
+                  <View style={personalSectionStyle.iconContainer}>
+                    <Profile width={20} height={20} />
+                  </View>
+                  <Text style={personalSectionStyle.text}>Profile details</Text>
+                </View>
+                <Feather name="chevron-right" size={20} style={personalSectionStyle.chevron} />
+              </View>
+            </TouchableOpacity>
           </Link>
-        </div>
-      </div>
-    </motion.div>
+        </View>
+      </View>
+    </Animated.View>
   )
 }
+
+export default PersonalSection

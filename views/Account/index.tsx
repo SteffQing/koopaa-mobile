@@ -1,50 +1,68 @@
-"use client";
+import { StyleSheet, View, Text, ImageBackground } from 'react-native'
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
+import ActionItems from '@/components/action-items'
+import { Avatar } from '@/components/avatar'
+import AccessSection from './access-section'
+import SecurityAndSupport from './security-support'
+import { PersonalSection } from './personal'
+import { useAuthUser } from '@/hooks/useUser'
 
-import { motion } from "framer-motion";
-import Container from "@/components/container";
-import ActionItems from "@/components/action-items";
-import { Avatar } from "@/components/avatar";
-import { AccessSection } from "./access-section";
-import SecurityAndSupport from "./security-support";
-import { PersonalSection } from "./personal";
-import { useAuthUser } from "@/hooks/useUser";
+const accountPageStyle = StyleSheet.create({
+  container: { flex: 1 },
+  banner: { width: '100%', height: 200 },
+  bannerContent: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -50 }, { translateY: -50 }],
+    alignItems: 'center',
+  },
+  username: { fontSize: 20, fontWeight: '500', color: '#FF6B00' },
+  section: { paddingHorizontal: 16, marginTop: 16, flexDirection: 'column', gap: 24 },
+  footer: { textAlign: 'center', fontSize: 14, color: '#6B7280', marginTop: 32, marginBottom: 80 },
+})
 
-export default function AccountPage() {
-  const { user, loading } = useAuthUser();
+const AccountPage: React.FC = () => {
+  const { user, loading } = useAuthUser()
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
-  };
+  }
+  const opacity = useSharedValue(0)
+  const y = useSharedValue(-20)
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }))
+
+  opacity.value = withTiming(1, { duration: 300 })
+  y.value = withTiming(0, { duration: 300 })
 
   return (
-    <Container className="p-0!">
-      <motion.div
-        className="bg-[url(/savings-card/total.png)] bg-cover bg-center relative w-full h-[200px]"
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      >
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center flex-col">
-          <Avatar size={86} number={user?.avatar} />
-          <h1 className="text-[#ff6600] text-xl font-medium">
-            {user?.username}
-          </h1>
-        </div>
-      </motion.div>
-      <section className="px-4 mt-4 flex flex-col gap-6">
+    <View style={accountPageStyle.container}>
+      <Animated.View style={animatedStyle}>
+        <ImageBackground
+          source={require('@/assets/public/savings-card/total.png')}
+          style={accountPageStyle.banner}
+          resizeMode="cover"
+        >
+          <View style={accountPageStyle.bannerContent}>
+            <Avatar size={86} number={user?.avatar} />
+            <Text style={accountPageStyle.username}>{user?.username}</Text>
+          </View>
+        </ImageBackground>
+      </Animated.View>
+      <View style={accountPageStyle.section}>
         <ActionItems user={user} loading={loading} />
-
         <AccessSection item={item} />
         <PersonalSection item={item} />
         <SecurityAndSupport item={item} />
-
-        <motion.div
-          variants={item}
-          className="text-center text-sm text-gray-500 mt-8 mb-20"
-        >
-          @2025 KooPaa Tech.
-        </motion.div>
-      </section>
-    </Container>
-  );
+        <Animated.View style={[item, { opacity: opacity.value, transform: [{ translateY: y.value }] }]}>
+          <Text style={accountPageStyle.footer}>@2025 KooPaa Tech.</Text>
+        </Animated.View>
+      </View>
+    </View>
+  )
 }
+
+export default AccountPage

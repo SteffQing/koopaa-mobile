@@ -9,7 +9,7 @@ interface ErrorStateProps {
   title?: string
   message?: string
   buttonText?: string
-  onRetry?: () => Promise<void> | void
+  onRetry?: () => void
   errorCode?: string
 }
 
@@ -41,11 +41,11 @@ const Error: React.FC<ErrorStateProps> = ({
   const theme = getTheme(colorScheme || 'light')
   const [loading, setLoading] = useState(false)
 
-  const handleRetry = async () => {
+  const handleRetry = () => {
     if (!onRetry) return
     setLoading(true)
     try {
-      await onRetry()
+      onRetry()
     } finally {
       setLoading(false)
     }

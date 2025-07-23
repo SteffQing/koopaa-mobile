@@ -13,7 +13,7 @@ export function useAppTheme() {
   }
 }
 
-export function AppTheme({ children }: PropsWithChildren) {
+export default function AppThemeProvider({ children }: PropsWithChildren) {
   const { theme } = useAppTheme()
 
   return <ThemeProvider value={theme}>{children}</ThemeProvider>

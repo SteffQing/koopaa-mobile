@@ -1,159 +1,206 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { toast } from "sonner";
-import { Eye, RefreshCw, Share2 } from "lucide-react";
-import { FormattedBalance } from "@/components/savings-and-wallet/card";
-import useContribute from "@/hooks/blockchain/write/useContribute";
-import { Button } from "@/components/ui/button";
-import query from "@/lib/fetch";
-import { Currency } from "@/components/savings-and-wallet/types";
-import useGetRate from "@/hooks/useGetRate";
+import FormattedBalance from '@/components/savings-and-wallet/format-balance'
+import type { Currency } from '@/components/savings-and-wallet/types'
+import { Button } from '@/components/ui'
+import useContribute from '@/hooks/blockchain/write/useContribute'
+import useGetRate from '@/hooks/useGetRate'
+import query from '@/lib/fetch'
+import { Feather } from '@expo/vector-icons'
+import { useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withDelay, withRepeat, withTiming } from 'react-native-reanimated'
+import Toast from 'react-native-toast-message'
 
-type Props = {
-  progress: number;
-  payout: number;
-  contributionAmount: number;
-  yourContribution: number;
-  started: boolean;
-  name: string;
-  pda: string;
-  you: string | undefined;
-  disabled?: boolean;
-  canTopUp: boolean;
-  isParticipant: boolean;
-};
-
-export function Invite({ pda }: { pda: string }) {
-  const [isInviting, setIsInviting] = useState(false);
-  const invite = async () => {
-    setIsInviting(true);
-    try {
-      const load = toast.loading("Please wait as we generate you a unique invite link");
-      const { data, error } = await query.post<string>("", { body: { pda } });
-      toast.dismiss(load);
-      if (data) {
-        await navigator.clipboard.writeText(data);
-        toast.success(`Invite link copied! Share with friends to join ${name} Ajo Group`);
-      } else {
-        toast.error(error || "Failed to generate invite link");
-      }
-    } catch (err) {
-      console.error("failed to copy invite link: ", err);
-      toast.error("Failed to copy invite link");
-    } finally {
-      setIsInviting(false);
-    }
-  };
-  return (
-    <motion.button
-      onClick={invite}
-      disabled={isInviting}
-      className="flex items-center gap-1 bg-white/50 hover:bg-white/80 px-2 py-1 rounded-full text-xs font-medium text-gray-700 transition-colors disabled:opacity-50"
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-    >
-      {isInviting ? <RefreshCw size={12} className="animate-spin" /> : <Share2 size={12} />}
-      Invite
-    </motion.button>
-  );
+interface GroupSavingsCardProps {
+  progress: number
+  payout: number
+  contributionAmount: number
+  yourContribution: number
+  started: boolean
+  name: string
+  pda: string
+  you?: string
+  disabled?: boolean
+  canTopUp: boolean
+  isParticipant: boolean
 }
 
-export default function GroupSavingsCard(props: Props) {
-  const { name, pda, contributionAmount } = props;
-  const [isBalanceVisible, setIsBalanceVisible] = useState(true);
+const groupSavingsCardStyle = StyleSheet.create({
+  card: { backgroundColor: '#e8ffcc', borderRadius: 12, padding: 16, marginBottom: 24 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+  title: { fontSize: 16, fontWeight: '500', color: '#374151' },
+  amountContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
+  amount: { flexDirection: 'row', alignItems: 'baseline' },
+  currency: { fontSize: 14, marginRight: 4 },
+  balance: { fontSize: 32, fontWeight: '700', color: '#121212' },
+  convertButton: {
+    backgroundColor: '#FCFCFC',
+    borderRadius: 9999,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  convertText: { fontSize: 12 },
+  goalContainer: { backgroundColor: '#FCFCFC', borderRadius: 8, padding: 12, marginBottom: 16 },
+  goalTitle: { fontSize: 14, marginBottom: 4 },
+  progressBar: { height: 8, backgroundColor: '#E5E7EB', borderRadius: 9999, marginBottom: 4 },
+  progress: { height: '100%', backgroundColor: '#22C55E', borderRadius: 9999 },
+  goalText: { flexDirection: 'row', justifyContent: 'space-between', fontSize: 12, color: '#6B7280' },
+  stats: { fontSize: 14, color: '#4B5563' },
+})
 
-  const [currency, setCurrency] = useState<Currency>("USDC");
-  const [balance, setBalance] = useState(props.payout);
+const GroupSavingsCard: React.FC<GroupSavingsCardProps> = (props) => {
+  const { name, pda, contributionAmount } = props
+  const [isBalanceVisible, setIsBalanceVisible] = useState(true)
+  const [currency, setCurrency] = useState<Currency>('USDC')
+  const [balance, setBalance] = useState(props.payout)
+  const { contribute, isPending, loading } = useContribute()
+  const rate = useGetRate()
 
-  const { contribute, isPending, loading } = useContribute();
-  const rate = useGetRate();
+  const opacity = useSharedValue(0)
+  const y = useSharedValue(10)
+  const cardStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }))
+  const progressStyle = useAnimatedStyle(() => ({
+    width: `${props.progress}%`,
+  }))
+  const balanceStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }))
 
-  const handleTopUp = async () => await contribute(pda, name, contributionAmount);
+  opacity.value = withTiming(1, { duration: 300 })
+  y.value = withDelay(500, withTiming(0, { duration: 300 }))
 
-  function convert() {
-    if (currency === "USDC") {
-      setBalance(props.payout * rate);
-      setCurrency("NGN");
+  const handleTopUp = async () => await contribute(pda, name, contributionAmount)
+
+  const convert = () => {
+    if (currency === 'USDC') {
+      setBalance(props.payout * rate)
+      setCurrency('NGN')
     } else {
-      setBalance(props.payout);
-      setCurrency("USDC");
+      setBalance(props.payout)
+      setCurrency('USDC')
     }
   }
 
-  const item = {
-    hidden: { opacity: 0, y: 10 },
-    show: { opacity: 1, y: 0 },
-  };
   return (
-    <motion.div
-      variants={item}
-      className="bg-[#e8ffcc] rounded-xl p-4 mb-6"
-      whileHover={{ y: -2, boxShadow: "0 4px 10px rgba(0,0,0,0.05)" }}
-    >
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <p className="text-gray-700 font-medium">Rotating Payout</p>
-          <button onClick={() => setIsBalanceVisible(!isBalanceVisible)}>
-            <Eye size={18} className="text-gray-600" />
-          </button>
-        </div>
+    <Animated.View style={[groupSavingsCardStyle.card, cardStyle]}>
+      <View style={groupSavingsCardStyle.header}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Text style={groupSavingsCardStyle.title}>Rotating Payout</Text>
+          <TouchableOpacity onPress={() => setIsBalanceVisible(!isBalanceVisible)}>
+            <Feather name="eye" size={18} color="#4B5563" />
+          </TouchableOpacity>
+        </View>
         {!props.started && <Invite pda={pda} />}
-      </div>
-
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-baseline">
-          <span className="text-sm mr-1">{currency}</span>
-          <motion.span
-            className="text-3xl font-bold"
-            key={isBalanceVisible.toString()}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            {isBalanceVisible ? <FormattedBalance amount={balance} /> : "****"}
-          </motion.span>
-        </div>
-
-        <div
-          className="bg-white rounded-full px-2 py-1 flex items-center gap-1 text-xs cursor-pointer"
-          onClick={convert}
-        >
-          <span>{currency}</span>
-          <RefreshCw size={12} />
-        </div>
-      </div>
-
-      <div className="bg-white rounded-lg p-3 mb-4">
-        <div className="flex justify-between items-center mb-1">
-          <span className="text-sm">Goal Tracker</span>
-        </div>
-        <div className="w-full h-2 bg-gray-200 rounded-full mb-1">
-          <motion.div
-            className="h-full bg-green-500 rounded-full"
-            initial={{ width: 0 }}
-            animate={{ width: `${props.progress}%` }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-          />
-        </div>
-        <div className="flex justify-between text-xs text-gray-500">
-          <span>1%</span>
-          <span>100%</span>
-        </div>
-      </div>
-
+      </View>
+      <View style={groupSavingsCardStyle.amountContainer}>
+        <View style={groupSavingsCardStyle.amount}>
+          <Text style={groupSavingsCardStyle.currency}>{currency}</Text>
+          <Animated.Text style={[groupSavingsCardStyle.balance, balanceStyle]}>
+            {isBalanceVisible ? <FormattedBalance amount={balance} /> : '****'}
+          </Animated.Text>
+        </View>
+        <TouchableOpacity style={groupSavingsCardStyle.convertButton} onPress={convert}>
+          <Text style={groupSavingsCardStyle.convertText}>{currency}</Text>
+          <Feather name="refresh-cw" size={12} color="#121212" />
+        </TouchableOpacity>
+      </View>
+      <View style={groupSavingsCardStyle.goalContainer}>
+        <Text style={groupSavingsCardStyle.goalTitle}>Goal Tracker</Text>
+        <View style={groupSavingsCardStyle.progressBar}>
+          <Animated.View style={[groupSavingsCardStyle.progress, progressStyle]} />
+        </View>
+        <View style={groupSavingsCardStyle.goalText}>
+          <Text>1%</Text>
+          <Text>100%</Text>
+        </View>
+      </View>
       {props.isParticipant && (
-        <div className="flex justify-between items-center mb-4">
-          <p className="text-sm text-gray-600">Amount you saved: ${props.yourContribution}</p>
-        </div>
+        <Text style={groupSavingsCardStyle.stats}>Amount you saved: ${props.yourContribution}</Text>
       )}
-
       <Button
-        onClick={handleTopUp}
+        onPress={handleTopUp}
         disabled={!props.started || props.disabled || !props.canTopUp || !props.isParticipant}
         loading={isPending || loading}
       >
         Contribute
       </Button>
-    </motion.div>
-  );
+    </Animated.View>
+  )
 }
+
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
+
+const Invite: React.FC<{ pda: string }> = ({ pda }) => {
+  const [isInviting, setIsInviting] = useState(false)
+  const scale = useSharedValue(1)
+  const rotation = useSharedValue(0)
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }))
+  const iconStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotation.value}deg` }],
+  }))
+
+  if (isInviting) {
+    rotation.value = withRepeat(withTiming(360, { duration: 1000 }), -1)
+  } else {
+    rotation.value = withTiming(0, { duration: 100 })
+  }
+
+  const handlePressIn = () => {
+    scale.value = withTiming(0.95, { duration: 100 })
+  }
+  const handlePressOut = () => {
+    scale.value = withTiming(1, { duration: 100 })
+  }
+
+  const invite = async () => {
+    setIsInviting(true)
+    try {
+      Toast.show({ type: 'info', text1: 'Please wait as we generate you a unique invite link' })
+      const { data, error } = await query.post<string>('', { body: { pda } })
+      Toast.hide()
+      if (data) {
+        const Clipboard = require('expo-clipboard')
+        await Clipboard.setStringAsync(data)
+        Toast.show({
+          type: 'success',
+          text1: `Invite link copied! Share with friends to join Ajo Group`,
+        })
+      } else {
+        Toast.show({ type: 'error', text1: error || 'Failed to generate invite link' })
+      }
+    } catch (err) {
+      console.error('failed to copy invite link: ', err)
+      Toast.show({ type: 'error', text1: 'Failed to copy invite link' })
+    } finally {
+      setIsInviting(false)
+    }
+  }
+
+  return (
+    <AnimatedTouchableOpacity
+      style={[groupSavingsCardStyle.convertButton, { backgroundColor: '#FCFCFC80' }, animatedStyle]}
+      onPress={invite}
+      disabled={isInviting}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+    >
+      {isInviting ? (
+        <Animated.View style={iconStyle}>
+          <Feather name="refresh-cw" size={12} color="#374151" />
+        </Animated.View>
+      ) : (
+        <Feather name="share-2" size={12} color="#374151" />
+      )}
+      <Text style={{ fontSize: 12, fontWeight: '500', color: '#374151' }}>Invite</Text>
+    </AnimatedTouchableOpacity>
+  )
+}
+
+export { GroupSavingsCard, Invite }

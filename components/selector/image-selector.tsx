@@ -1,8 +1,6 @@
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
-import { useColorScheme } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
-import getTheme from '@/constants/theme'
 import Check from '@/assets/svgs/check.svg'
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 interface ImageSelectorProps {
   images: any[]
@@ -47,9 +45,6 @@ const imageSelectorStyle = StyleSheet.create({
 })
 
 const ImageSelector: React.FC<ImageSelectorProps> = ({ images, value, onChange }) => {
-  const colorScheme = useColorScheme()
-  const theme = getTheme(colorScheme || 'light')
-
   return (
     <View style={imageSelectorStyle.container}>
       {images.map((image, index) => {

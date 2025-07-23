@@ -1,125 +1,190 @@
-import { formatDate } from "@/lib/date";
-import { motion } from "framer-motion";
-import { Calendar } from "lucide-react";
-import { Invite } from "./Card";
-import Outstanding from "@/assets/svgs/user-info/outstanding-contribution.svg";
-import PayoutComing from "@/assets/svgs/user-info/payout-coming.svg";
-import { useModal } from "@/providers/modal-provider";
-import { EnhancedInvitationModal } from "@/components/modal/enhanced-invite";
-
-const item = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0 },
-};
+import Outstanding from '@/assets/svgs/user-info/outstanding-contribution.svg'
+import PayoutComing from '@/assets/svgs/user-info/payout-coming.svg'
+import { EnhancedInvitationModal } from '@/components/modal'
+import { formatDate } from '@/lib/date'
+import { useModal } from '@/providers/modal-provider'
+import { Feather } from '@expo/vector-icons'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import { Invite } from './Card'
 
 interface InfoProps {
-  missedRounds: number;
-  nextPayout: boolean;
-  payoutDate: Date | null;
-  slots: number;
-  pda: string;
-  isParticipant: boolean;
-  name: string;
-  fee: number;
+  missedRounds: number
+  nextPayout: boolean
+  payoutDate: Date | null
+  slots: number
+  pda: string
+  isParticipant: boolean
+  name: string
+  fee: number
 }
 
-function JoinAjoGroup({ pda, name, fee }: Pick<InfoProps, "pda" | "name" | "fee">) {
-  const { showModal } = useModal();
+const infoStyle = StyleSheet.create({
+  card: { borderRadius: 12, padding: 16, marginBottom: 24 },
+  joinCard: { backgroundColor: '#121212' },
+  slotsCard: { backgroundColor: '#121212' },
+  missedCard: { backgroundColor: '#FFF7ED' },
+  payoutCard: { backgroundColor: '#e8ffcc' },
+  content: { flexDirection: 'column' },
+  slotsContent: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  title: { fontSize: 16, fontWeight: '500', color: '#FCFCFC' },
+  missedTitle: { color: '#FF6B00' },
+  payoutTitle: { color: '#FF6B00' },
+  subtitle: { fontSize: 14, color: '#767676' },
+  missedSubtitle: { color: '#4B5563' },
+  payoutSubtitle: { color: '#4B5563' },
+  iconContainer: { backgroundColor: '#FFEDD5', borderRadius: 9999, padding: 8 },
+  payoutIconContainer: { backgroundColor: '#F9F4F1', borderRadius: 9999, padding: 8 },
+})
+
+const JoinAjoGroup: React.FC<Pick<InfoProps, 'pda' | 'name' | 'fee'>> = ({ pda, name, fee }) => {
+  const { showModal } = useModal()
+  const opacity = useSharedValue(0)
+  const y = useSharedValue(10)
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }))
+
+  opacity.value = withTiming(1, { duration: 300 })
+  y.value = withTiming(0, { duration: 300 })
 
   const openInvitationModal = () => {
     showModal(<EnhancedInvitationModal inviter="KooPaa" groupName={name} id={pda} fee={fee} />, {
-      position: "center",
+      position: 'center',
       showCloseButton: true,
       closeOnClickOutside: true,
-    });
-  };
+    })
+  }
+
   return (
-    <motion.div variants={item} className="bg-[#121212] rounded-xl p-4 mb-6">
-      <div className="flex items-left cursor-pointer flex-col" onClick={openInvitationModal}>
-        <p className="font-medium text-[#FCFCFC]">Click to Join this group</p>
-        <p className="text-sm text-[#767676]">Join this saving group and start saving</p>
-      </div>
-    </motion.div>
-  );
+    <Animated.View style={[infoStyle.card, infoStyle.joinCard, animatedStyle]}>
+      <TouchableOpacity onPress={openInvitationModal}>
+        <View style={infoStyle.content}>
+          <Text style={infoStyle.title}>Click to Join this group</Text>
+          <Text style={infoStyle.subtitle}>Join this saving group and start saving</Text>
+        </View>
+      </TouchableOpacity>
+    </Animated.View>
+  )
 }
 
-function OpenSlotsInvite({ slots, pda }: Pick<InfoProps, "slots" | "pda">) {
+const OpenSlotsInvite: React.FC<Pick<InfoProps, 'slots' | 'pda'>> = ({ slots, pda }) => {
+  const opacity = useSharedValue(0)
+  const y = useSharedValue(10)
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }))
+
+  opacity.value = withTiming(1, { duration: 300 })
+  y.value = withTiming(0, { duration: 300 })
+
   return (
-    <motion.div variants={item} className="bg-[#121212] rounded-xl p-4 mb-6">
-      <div className="flex items-center gap-3">
-        <div>
-          <p className="font-medium text-[#FCFCFC]">{slots} Open Slots</p>
-          <p className="text-sm text-[#767676]">Generate the link and invite people to join this saving group</p>
-        </div>
+    <Animated.View style={[infoStyle.card, infoStyle.slotsCard, animatedStyle]}>
+      <View style={infoStyle.slotsContent}>
+        <View>
+          <Text style={infoStyle.title}>{slots} Open Slots</Text>
+          <Text style={infoStyle.subtitle}>Generate the link and invite people to join this saving group</Text>
+        </View>
         <Invite pda={pda} />
-      </div>
-    </motion.div>
-  );
+      </View>
+    </Animated.View>
+  )
 }
 
-function MissingRounds({ missedRounds }: Pick<InfoProps, "missedRounds">) {
+const MissingRounds: React.FC<Pick<InfoProps, 'missedRounds'>> = ({ missedRounds }) => {
+  const opacity = useSharedValue(0)
+  const y = useSharedValue(10)
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }))
+
+  opacity.value = withTiming(1, { duration: 300 })
+  y.value = withTiming(0, { duration: 300 })
+
   return (
-    <motion.div variants={item} className="bg-orange-100 rounded-xl p-4 mb-6">
-      <div className="flex items-center gap-3">
-        <div className="bg-orange-200 rounded-full p-2">
-          <Outstanding />
-        </div>
-        <div>
-          <p className="font-medium text-[#ff6b00]">Pay your contribution now</p>
-          <p className="text-sm text-gray-600">
+    <Animated.View style={[infoStyle.card, infoStyle.missedCard, animatedStyle]}>
+      <View style={infoStyle.slotsContent}>
+        <View style={infoStyle.iconContainer}>
+          <Outstanding width={20} height={20} />
+        </View>
+        <View>
+          <Text style={[infoStyle.title, infoStyle.missedTitle]}>Pay your contribution now</Text>
+          <Text style={[infoStyle.subtitle, infoStyle.missedSubtitle]}>
             You are set back by {missedRounds} contribution rounds. Endeavour to pay!
-          </p>
-        </div>
-      </div>
-    </motion.div>
-  );
+          </Text>
+        </View>
+      </View>
+    </Animated.View>
+  )
 }
 
-function NextPayout({ payoutDate }: { payoutDate: Date }) {
+const NextPayout: React.FC<{ payoutDate: Date }> = ({ payoutDate }) => {
+  const opacity = useSharedValue(0)
+  const y = useSharedValue(10)
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }))
+
+  opacity.value = withTiming(1, { duration: 300 })
+  y.value = withTiming(0, { duration: 300 })
+
   return (
-    <motion.div variants={item} className="bg-[#e8ffcc] rounded-xl p-4 mb-6">
-      <div className="flex items-center gap-3">
-        <div className="bg-[#F9F4F1] rounded-full p-2">
-          <PayoutComing />
-        </div>
-        <div>
-          <p className="font-medium text-[#ff6b00]">Your payout is coming soon!</p>
-          <p className="text-sm text-gray-600">You are next to receive the payout on {formatDate(payoutDate)}</p>
-        </div>
-      </div>
-    </motion.div>
-  );
+    <Animated.View style={[infoStyle.card, infoStyle.payoutCard, animatedStyle]}>
+      <View style={infoStyle.slotsContent}>
+        <View style={infoStyle.payoutIconContainer}>
+          <PayoutComing width={20} height={20} />
+        </View>
+        <View>
+          <Text style={[infoStyle.title, infoStyle.payoutTitle]}>Your payout is coming soon!</Text>
+          <Text style={[infoStyle.subtitle, infoStyle.payoutSubtitle]}>
+            You are next to receive the payout on {formatDate(payoutDate)}
+          </Text>
+        </View>
+      </View>
+    </Animated.View>
+  )
 }
 
-// #D4FFAB
-export function Info({ missedRounds, nextPayout, payoutDate, slots, isParticipant, ...props }: InfoProps) {
-  const hasMissedRounds = missedRounds > 0;
-  const hasPayout = nextPayout && Boolean(payoutDate);
-  const hasSlots = slots > 0;
+const NextSavingDate: React.FC<{ date: Date | null }> = ({ date }) => {
+  const opacity = useSharedValue(0)
+  const y = useSharedValue(10)
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }))
 
-  if (hasMissedRounds) return <MissingRounds missedRounds={missedRounds} />;
+  opacity.value = withTiming(1, { duration: 300 })
+  y.value = withTiming(0, { duration: 300 })
 
-  if (hasPayout) return <NextPayout payoutDate={payoutDate as Date} />;
-
-  if (isParticipant && hasSlots) return <OpenSlotsInvite slots={slots} pda={props.pda} />;
-
-  if (!isParticipant && hasSlots) return <JoinAjoGroup {...props} />;
-
-  return <></>;
-}
-
-export function NextSavingDate({ date }: { date: Date | null }) {
   return (
-    <motion.div variants={item} className="bg-blue-50 rounded-xl p-4 mb-6">
-      <div className="flex items-center gap-3">
-        <div className="bg-blue-100 rounded-full p-2">
-          <Calendar size={20} className="text-blue-600" />
-        </div>
-        <div>
-          <p className="text-sm text-gray-600">Your next saving date is</p>
-          <p className="font-medium">{date ? formatDate(date) : "Not set"}</p>
-        </div>
-      </div>
-    </motion.div>
-  );
+    <Animated.View style={[infoStyle.card, { backgroundColor: '#EFF6FF' }, animatedStyle]}>
+      <View style={infoStyle.slotsContent}>
+        <View style={[infoStyle.iconContainer, { backgroundColor: '#DBEAFE' }]}>
+          <Feather name="calendar" size={20} color="#2563EB" />
+        </View>
+        <View>
+          <Text style={[infoStyle.subtitle, { color: '#4B5563' }]}>Your next saving date is</Text>
+          <Text style={infoStyle.title}>{date ? formatDate(date) : 'Not set'}</Text>
+        </View>
+      </View>
+    </Animated.View>
+  )
 }
+
+const Info: React.FC<InfoProps> = ({ missedRounds, nextPayout, payoutDate, slots, isParticipant, ...props }) => {
+  const hasMissedRounds = missedRounds > 0
+  const hasPayout = nextPayout && Boolean(payoutDate)
+  const hasSlots = slots > 0
+
+  if (hasMissedRounds) return <MissingRounds missedRounds={missedRounds} />
+  if (hasPayout) return <NextPayout payoutDate={payoutDate as Date} />
+  if (isParticipant && hasSlots) return <OpenSlotsInvite slots={slots} pda={props.pda} />
+  if (!isParticipant && hasSlots) return <JoinAjoGroup {...props} />
+  return null
+}
+
+export { Info, NextSavingDate }

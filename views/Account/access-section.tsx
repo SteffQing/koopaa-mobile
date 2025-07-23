@@ -1,73 +1,91 @@
-import { motion } from "framer-motion";
-import { VariantProps } from "./types";
-import { SwitchButton } from "@/components/ui/button";
-import { useUserSettings } from "@/hooks/useUserSettings";
+import { StyleSheet, View, Text } from 'react-native'
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
+import { SwitchButton } from '@/components/ui'
+import { useUserSettings } from '@/hooks/useUserSettings'
+import { VariantProps } from './types'
 
-export const AccessSection = ({ item }: VariantProps) => {
-  const {
-    emergencyExitState,
-    interestEnabledState,
-    showBalancesState,
-    notificationsEnabledState,
-  } = useUserSettings();
+interface AccessSectionProps extends VariantProps {
+  item?: { hidden: { opacity: number; y: number }; show: { opacity: number; y: number } }
+}
+
+const accessSectionStyle = StyleSheet.create({
+  container: { marginBottom: 24 },
+  title: { fontSize: 14, fontWeight: '500', color: '#333333', marginBottom: 12 },
+  card: {
+    backgroundColor: '#FCFCFC',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  inner: { paddingHorizontal: 12 },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E6E6E6',
+  },
+  lastRow: { borderBottomWidth: 0 },
+  text: { fontSize: 12, color: '#121212' },
+})
+
+const AccessSection: React.FC<AccessSectionProps> = ({ item }) => {
+  const { emergencyExitState, interestEnabledState, showBalancesState, notificationsEnabledState } = useUserSettings()
+
+  const opacity = useSharedValue(item?.hidden.opacity ?? 0)
+  const y = useSharedValue(item?.hidden.y ?? 20)
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }))
+
+  opacity.value = withTiming(item?.show.opacity ?? 1, { duration: 300 })
+  y.value = withTiming(item?.show.y ?? 0, { duration: 300 })
 
   return (
-    <motion.div variants={item}>
-      <h2 className="font-medium text-sm text-[#333333] mb-3">Access</h2>
-
-      <div className="bg-[#FCFCFC] rounded-[8px] overflow-hidden box-shado">
-        <div className="px-3">
-          <div className="flex justify-between items-center py-3 border-b border-[#E6E6E6]">
-            <span className="font-normal text-[#121212] text-xs">
-              Allow notification
-            </span>
-
+    <Animated.View style={[accessSectionStyle.container, animatedStyle]}>
+      <Text style={accessSectionStyle.title}>Access</Text>
+      <View style={accessSectionStyle.card}>
+        <View style={accessSectionStyle.inner}>
+          <View style={accessSectionStyle.row}>
+            <Text style={accessSectionStyle.text}>Allow notification</Text>
             <SwitchButton
               setState={notificationsEnabledState.setState}
               state={notificationsEnabledState.state}
               key="notificationsEnabled"
               disabled
             />
-          </div>
-
-          <div className="flex justify-between items-center py-3 border-b border-[#E6E6E6]">
-            <span className="font-normal text-[#121212] text-xs">
-              Show dashboard balances
-            </span>
-
-            <SwitchButton
-              setState={showBalancesState.setState}
-              state={showBalancesState.state}
-              key="showBalances"
-            />
-          </div>
-
-          <div className="flex justify-between items-center py-3 border-b border-[#E6E6E6]">
-            <span className="font-normal text-[#121212] text-xs">
-              Interest enabled on DEFI yield
-            </span>
+          </View>
+          <View style={accessSectionStyle.row}>
+            <Text style={accessSectionStyle.text}>Show dashboard balances</Text>
+            <SwitchButton setState={showBalancesState.setState} state={showBalancesState.state} key="showBalances" />
+          </View>
+          <View style={accessSectionStyle.row}>
+            <Text style={accessSectionStyle.text}>Interest enabled on DEFI yield</Text>
             <SwitchButton
               setState={interestEnabledState.setState}
               state={interestEnabledState.state}
               key="interestEnabled"
               disabled
             />
-          </div>
-
-          <div className="flex justify-between items-center py-3">
-            <span className="font-normal text-[#121212] text-xs">
-              Emergency exit preference
-            </span>
-
+          </View>
+          <View style={[accessSectionStyle.row, accessSectionStyle.lastRow]}>
+            <Text style={accessSectionStyle.text}>Emergency exit preference</Text>
             <SwitchButton
               setState={emergencyExitState.setState}
               state={emergencyExitState.state}
               key="emergencyExit"
               disabled
             />
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
+          </View>
+        </View>
+      </View>
+    </Animated.View>
+  )
+}
+
+export default AccessSection
