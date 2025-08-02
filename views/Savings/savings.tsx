@@ -1,8 +1,8 @@
-import groupImage from '@/assets/public/quick-access/public-group.png'
-import soloImage from '@/assets/public/quick-access/solo.png'
 import type { SavingsData } from '@/components/savings-and-wallet/types'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import groupImage from '../../assets/public/quick-access/public-group.png'
+import soloImage from '../../assets/public/quick-access/solo.png'
 
 interface SavingsProps {
   savingsData: [SavingsData, SavingsData]

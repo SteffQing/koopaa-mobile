@@ -1,6 +1,6 @@
-import splash from '@/assets/public/splash-screen.png'
 import { ImageBackground, StyleSheet } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import splash from '../assets/public/splash-screen.png'
 
 const splashScreenStyle = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center' },

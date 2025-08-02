@@ -1,4 +1,3 @@
-import cleanSquad from '@/assets/public/koopa_clean_squad.png'
 import { Button } from '@/components/ui'
 import { Image, StyleSheet, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
@@ -11,6 +10,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import Toast from 'react-native-toast-message'
+import cleanSquad from '../../../assets/koopa_clean_squad.png'
 
 const squadsPageStyle = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FFF7ED' },

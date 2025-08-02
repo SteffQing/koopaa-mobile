@@ -1,4 +1,4 @@
-import placeholderImage from '@/assets/images/placeholder.png'
+import placeholderImage from '../../assets/images/placeholder.png'
 import Check from '@/assets/svgs/check.svg'
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'

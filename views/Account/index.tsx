@@ -1,4 +1,4 @@
-import totalCard from '@/assets/public/savings-card/total.png'
+import totalCard from '../../assets/public/savings-card/total.png'
 import ActionItems from '@/components/action-items'
 import { Avatar } from '@/components/avatar'
 import { useAuthUser } from '@/hooks/useUser'

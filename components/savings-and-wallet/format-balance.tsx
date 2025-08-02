@@ -1,8 +1,8 @@
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, TextStyle } from 'react-native'
 
 interface FormattedBalanceProps {
   amount?: number
-  cStyle?: any
+  cStyle?: TextStyle
 }
 
 const formattedBalanceStyle = StyleSheet.create({

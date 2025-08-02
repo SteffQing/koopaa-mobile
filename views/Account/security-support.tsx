@@ -1,17 +1,13 @@
-import { StyleSheet, View, Text, TouchableOpacity, Linking } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
-import { Link, useRouter } from 'expo-router'
-import { Feather } from '@expo/vector-icons'
-import HelpCenter from '@/assets/svgs/account/security-support/help-center.svg'
 import ContactUs from '@/assets/svgs/account/security-support/contact-us.svg'
+import HelpCenter from '@/assets/svgs/account/security-support/help-center.svg'
 import LogOut from '@/assets/svgs/account/security-support/log-out.svg'
-import { useWallet } from '@solana/wallet-adapter-react-native'
+import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import query from '@/lib/fetch'
+import { Feather } from '@expo/vector-icons'
+import { useRouter } from 'expo-router'
+import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { VariantProps } from './types'
-
-interface SecurityAndSupportProps extends VariantProps {
-  item?: { hidden: { opacity: number; y: number }; show: { opacity: number; y: number } }
-}
 
 const securityAndSupportStyle = StyleSheet.create({
   container: { marginBottom: 24 },
@@ -42,8 +38,8 @@ const securityAndSupportStyle = StyleSheet.create({
   chevron: { color: '#9CA3AF' },
 })
 
-const SecurityAndSupport: React.FC<SecurityAndSupportProps> = ({ item }) => {
-  const { disconnect } = useWallet()
+const SecurityAndSupport: React.FC<VariantProps> = ({ item }) => {
+  const { disconnect } = useWalletUi()
   const router = useRouter()
   const opacity = useSharedValue(item?.hidden.opacity ?? 0)
   const y = useSharedValue(item?.hidden.y ?? 20)

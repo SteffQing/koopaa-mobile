@@ -1,8 +1,4 @@
-import { claimSOL, claimUSDC } from '@/actions/faucet'
-import SOL from '@/assets/coins/solana.png'
-import USDC from '@/assets/coins/usdc.png'
 import Refresh from '@/assets/svgs/refresh.svg'
-import { FormattedBalance } from '@/components/savings-and-wallet/card' // Assume this is your React Native component
 import { Button, Checkbox } from '@/components/ui'
 import getTheme from '@/constants/theme'
 import useFaucetBalance, { useATA } from '@/hooks/blockchain/useFaucet'
@@ -16,6 +12,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native'
 import Toast from 'react-native-toast-message'
+import SOL from '../../assets/coins/solana.png'
+import USDC from '../../assets/coins/usdc.png'
+import FormattedBalance from '../savings-and-wallet/format-balance'
 import { Spinner } from '../skeletons'
 
 interface Claim {
@@ -101,7 +100,7 @@ const FaucetBalance: React.FC = () => {
               >
                 <Image source={SOL} style={{ width: 32, height: 32, borderRadius: 16 }} />
                 <Text style={[faucetBalanceStyle.cardText, { color: theme.textPrimary }]}>
-                  <FormattedBalance amount={data.solbalance} style={{ fontSize: 12 }} /> SOL
+                  <FormattedBalance amount={data.solbalance} cStyle={{ fontSize: 12 }} /> SOL
                 </Text>
               </View>
               <View
@@ -112,7 +111,7 @@ const FaucetBalance: React.FC = () => {
               >
                 <Image source={USDC} style={{ width: 32, height: 32, borderRadius: 16 }} />
                 <Text style={[faucetBalanceStyle.cardText, { color: theme.textPrimary }]}>
-                  <FormattedBalance amount={data.usdcbalance} style={{ fontSize: 12 }} /> USDC
+                  <FormattedBalance amount={data.usdcbalance} cStyle={{ fontSize: 12 }} /> USDC
                 </Text>
               </View>
             </View>
@@ -270,8 +269,8 @@ const FaucetModal: React.FC = () => {
     const to = session!
     try {
       setClaiming(true)
-      const hashes = await Promise.all([sol && claimSOL(to, 0.01), usdc && Boolean(ok) && claimUSDC(to, 1000)])
-      await mutateAsync(hashes)
+      // const hashes = await Promise.all([sol && claimSOL(to, 0.01), usdc && Boolean(ok) && claimUSDC(to, 1000)])
+      // await mutateAsync(hashes)
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['faucet', session] }),
         queryClient.invalidateQueries({ queryKey: ['usdcBalance', to] }),
@@ -339,7 +338,6 @@ const FaucetModal: React.FC = () => {
             >
               <View style={faucetModalStyle.tokenContent}>
                 <Checkbox
-                  id="usdc"
                   checked={selectedTokens.usdc}
                   onCheckedChange={(checked) => handleTokenSelection('usdc', checked as boolean)}
                   disabled={data?.claimedUSDC}
@@ -365,7 +363,7 @@ const FaucetModal: React.FC = () => {
             >
               <View style={faucetModalStyle.tokenContent}>
                 <Checkbox
-                  id="sol"
+                  // id="sol"
                   checked={selectedTokens.sol}
                   onCheckedChange={(checked) => handleTokenSelection('sol', checked as boolean)}
                   disabled={data?.claimedSOL}
@@ -391,7 +389,7 @@ const FaucetModal: React.FC = () => {
             onPress={handleClaim}
             disabled={!session || (!selectedTokens.usdc && !selectedTokens.sol) || !ok}
             loading={isLoading || isPending || claiming}
-            style={[faucetModalStyle.claimButton, { backgroundColor: theme.orange, color: '#FFFFFF' }]}
+            style={[faucetModalStyle.claimButton, { backgroundColor: theme.orange }]}
           >
             {`Claim ${selectedTokens.usdc ? '1000 USDC' : ''}${selectedTokens.usdc && selectedTokens.sol ? ' + ' : ''}${selectedTokens.sol ? '0.01 SOL' : ''}`}
           </Button>

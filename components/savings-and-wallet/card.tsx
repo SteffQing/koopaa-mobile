@@ -1,6 +1,3 @@
-import ajoBg from '@/assets/public/savings-card/ajo.png'
-import individualBg from '@/assets/public/savings-card/individual.png'
-import totalBg from '@/assets/public/savings-card/total.png'
 import ArrowDown from '@/assets/svgs/arrow-down.svg'
 import ArrowUp from '@/assets/svgs/arrow-up.svg'
 import Refresh from '@/assets/svgs/refresh.svg'
@@ -22,6 +19,9 @@ import {
   View,
 } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import ajoBg from '../../assets/public/savings-card/ajo.png'
+import individualBg from '../../assets/public/savings-card/individual.png'
+import totalBg from '../../assets/public/savings-card/total.png'
 import FormattedBalance from './format-balance'
 import { Currency, SavingsType, Tab } from './types'
 

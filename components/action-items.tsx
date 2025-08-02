@@ -84,12 +84,12 @@ const ActionItems: React.FC<ActionItemsProps> = ({ user, loading }) => {
     {
       title: 'Add a username',
       description: 'Get easily identified. Please add a username',
-      action: () => router.push('/account/profile'),
+      action: () => router.push('/(tabs)/account/profile/page'),
     },
     {
       title: 'Add an email',
       description: 'Make it easier for us to notify you',
-      action: () => router.push('/account/profile'),
+      action: () => router.push('/(tabs)/account/profile/page'),
     },
   ]
 

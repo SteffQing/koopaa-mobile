@@ -1,10 +1,10 @@
-import emptyVault from '@/assets/public/empty-vault.png'
 import Card from '@/components/savings-and-wallet/card'
 import NavHeader from '@/views/Navigation/nav-header'
 import { Feather } from '@expo/vector-icons'
 import { Link } from 'expo-router'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming } from 'react-native-reanimated'
+import emptyVault from '../../../../assets/public/empty-vault.png'
 
 const individualSavingsStyle = StyleSheet.create({
   container: { flex: 1, padding: 16 },

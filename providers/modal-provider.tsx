@@ -1,4 +1,3 @@
-import XIcon from '@/assets/svgs/x.svg'
 import getTheme from '@/constants/theme'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native'
@@ -130,7 +129,7 @@ const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   onPress={hideModal}
                   style={[modalProviderStyle.closeButton, { backgroundColor: theme.gray100 }]}
                 >
-                  <XIcon width={24} height={24} />
+                  {/* <XIcon width={24} height={24} /> */}X
                 </TouchableOpacity>
               )}
               {modalContent}

@@ -2,7 +2,7 @@ import Account from '@/assets/svgs/navigation/account.svg'
 import Home from '@/assets/svgs/navigation/home.svg'
 import Savings from '@/assets/svgs/navigation/savings.svg'
 import Squads from '@/assets/svgs/squad.svg'
-import { Link, usePathname } from 'expo-router'
+import { Link, RelativePathString, usePathname } from 'expo-router'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 
@@ -63,7 +63,7 @@ const BottomNavbar: React.FC = () => {
         }
 
         return (
-          <Link href={tab.path} key={tab.name} asChild>
+          <Link href={tab.path as RelativePathString} key={tab.name} asChild>
             <TouchableOpacity onPressIn={handlePressIn} onPressOut={handlePressOut}>
               <Animated.View style={[bottomNavbarStyle.tab, tabStyle]}>
                 <Icon width={24} height={24} fill={isActive ? '#FF6B00' : '#767676'} />

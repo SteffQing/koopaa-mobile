@@ -1,11 +1,10 @@
 import Bolt from '@/assets/svgs/bolt.svg'
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
-
-import myGroupsImg from '@/assets/quick-access/my-groups.png'
-import privateGroupImg from '@/assets/quick-access/private-group.png'
-import publicGroupImg from '@/assets/quick-access/public-group.png'
-import soloImg from '@/assets/quick-access/solo.png'
+import myGroupsImg from '../../assets/quick-access/my-groups.png'
+import privateGroupImg from '../../assets/quick-access/private-group.png'
+import publicGroupImg from '../../assets/quick-access/public-group.png'
+import soloImg from '../../assets/quick-access/solo.png'
 
 const items = [
   {

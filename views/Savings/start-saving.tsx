@@ -1,10 +1,10 @@
-import piggybank from '@/assets/public/coins/piggybank.png'
-import squad from '@/assets/public/koopaa-squad.png'
-import vault from '@/assets/public/vault.png'
 import { Link, RelativePathString } from 'expo-router'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import piggybank from '../../assets/public/coins/piggybank.png'
+import squad from '../../assets/public/koopaa-squad.png'
+import vault from '../../assets/public/vault.png'
 
 const savingOptions = [
   {
