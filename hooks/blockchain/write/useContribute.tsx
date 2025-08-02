@@ -1,50 +1,40 @@
-"use client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { PublicKey, SystemProgram } from "@solana/web3.js";
-import { useMemo } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { getKoopaProgram } from "@/lib/solana/koopa-exports";
-import { getKoopaProgramId } from "@/lib/solana/koopa-exports";
-import { useAnchorProvider } from "@/providers/solana-provider";
-import { useTransactionToast } from "../../use-transaction-toast";
-import useUSDCMint from "../helpers/useUSDCMint";
-import {
-  getAssociatedTokenAddressSync,
-  TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
-import { toast } from "sonner";
-import query from "@/lib/fetch";
-import { AddActivityData } from "@/app/api/activities/schema";
-import { ActivityType } from "../../../../prisma-client";
-import { handleOnchainError } from "../helpers/errors";
+'use client'
+import { useWalletUi } from '@/components/solana/use-wallet-ui'
+import toast from '@/components/toast'
+import { AddActivityData } from '@/constants/schema'
+import query from '@/lib/fetch'
+import { getKoopaProgram, getKoopaProgramId } from '@/lib/solana/koopa-exports'
+import { useAnchorProvider } from '@/providers/solana-provider'
+import { getAssociatedTokenAddressSync, TOKEN_PROGRAM_ID } from '@solana/spl-token'
+import { PublicKey, SystemProgram } from '@solana/web3.js'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMemo } from 'react'
+import { useTransactionToast } from '../../use-transaction-toast'
+import { handleOnchainError } from '../helpers/errors'
+import useUSDCMint from '../helpers/useUSDCMint'
 
 export default function useContribute() {
-  const provider = useAnchorProvider();
-  const { publicKey: userPublicKey } = useWallet();
-  const USDC = useUSDCMint();
+  const provider = useAnchorProvider()
+  const { account } = useWalletUi()
+  const USDC = useUSDCMint()
 
-  const transactionToast = useTransactionToast();
-  const queryClient = useQueryClient();
+  const transactionToast = useTransactionToast()
+  const queryClient = useQueryClient()
 
-  const programId = getKoopaProgramId();
-  const program = useMemo(
-    () => getKoopaProgram(provider, programId),
-    [provider, programId]
-  );
+  const programId = getKoopaProgramId()
+  const program = useMemo(() => getKoopaProgram(provider, programId), [provider, programId])
 
+  const userPublicKey = account?.publicKey
   const { mutateAsync: contributeOnchain, isPending } = useMutation({
     mutationFn: async (ajoGroup: string) => {
-      if (!userPublicKey) throw new Error("Wallet not connected");
+      if (!userPublicKey) throw new Error('Wallet not connected')
 
-      const contributorTokenAccount = getAssociatedTokenAddressSync(
-        USDC,
-        userPublicKey
-      );
-      const ajoGroupPDA = new PublicKey(ajoGroup);
+      const contributorTokenAccount = getAssociatedTokenAddressSync(USDC, userPublicKey)
+      const ajoGroupPDA = new PublicKey(ajoGroup)
       const [groupTokenVaultPda] = PublicKey.findProgramAddressSync(
-        [Buffer.from("group-vault"), ajoGroupPDA.toBuffer()],
-        programId
-      );
+        [Buffer.from('group-vault'), ajoGroupPDA.toBuffer()],
+        programId,
+      )
 
       try {
         // Using the direct Anchor pattern
@@ -59,54 +49,53 @@ export default function useContribute() {
             tokenProgram: TOKEN_PROGRAM_ID,
             systemProgram: SystemProgram.programId,
           })
-          .rpc();
+          .rpc()
 
         // Show toast notification
-        transactionToast(signature);
+        transactionToast(signature)
 
         // Invalidate queries to refresh data
         queryClient.invalidateQueries({
-          queryKey: ["ajo-group", ajoGroup],
-        });
+          queryKey: ['ajo-group', ajoGroup],
+        })
 
-        return { signature };
+        return { signature }
       } catch (error) {
-        handleOnchainError(error);
-        throw error;
+        handleOnchainError(error)
+        throw error
       }
     },
-  });
+  })
 
   const { mutateAsync: contributeActivity, isPending: loading } = useMutation({
-    mutationKey: ["contribute-activity-db-call"],
-    mutationFn: async (data: AddActivityData) =>
-      query.post("activities", { body: data }),
+    mutationKey: ['contribute-activity-db-call'],
+    mutationFn: async (data: AddActivityData) => query.post('activities', { body: data }),
     onSuccess({ ok, error }) {
       if (ok) {
-        toast.success("Successful contribution made");
+        toast.success('Successful contribution made')
         queryClient.invalidateQueries({
-          queryKey: ["activities", userPublicKey?.toBase58()],
-        });
+          queryKey: ['activities', userPublicKey?.toBase58()],
+        })
       } else {
-        toast.error(error);
+        toast.error(error ?? 'An error occured while trying to contribute')
       }
     },
     onError(error) {
-      toast.error(error.message);
+      toast.error(error.message)
     },
-  });
+  })
 
   async function contribute(pda: string, name: string, amount: number) {
-    const { signature } = await contributeOnchain(pda);
+    const { signature } = await contributeOnchain(pda)
     const joinData: AddActivityData = {
       title: `Send money to ${name}`,
       type: ActivityType.transfer,
       sig: signature,
       amount,
       group_pda: pda,
-    };
-    await contributeActivity(joinData);
+    }
+    await contributeActivity(joinData)
   }
 
-  return { contribute, isPending, loading };
+  return { contribute, isPending, loading }
 }

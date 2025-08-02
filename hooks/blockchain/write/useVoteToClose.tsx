@@ -1,45 +1,37 @@
-"use client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { PublicKey, SystemProgram } from "@solana/web3.js";
-import { useMemo } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { getKoopaProgram } from "@/lib/solana/koopa-exports";
-import { getKoopaProgramId } from "@/lib/solana/koopa-exports";
-import { useAnchorProvider } from "@/providers/solana-provider";
-import { useTransactionToast } from "../../use-transaction-toast";
-import { toast } from "sonner";
-import query from "@/lib/fetch";
-import { AddActivityData } from "@/app/api/activities/schema";
-import { ActivityType } from "../../../../prisma-client";
-import { handleOnchainError } from "../helpers/errors";
+'use client'
+import { useWalletUi } from '@/components/solana/use-wallet-ui'
+import toast from '@/components/toast'
+import { AddActivityData } from '@/constants/schema'
+import query from '@/lib/fetch'
+import { getKoopaProgram, getKoopaProgramId } from '@/lib/solana/koopa-exports'
+import { useAnchorProvider } from '@/providers/solana-provider'
+import { PublicKey, SystemProgram } from '@solana/web3.js'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMemo } from 'react'
+import { useTransactionToast } from '../../use-transaction-toast'
+import { handleOnchainError } from '../helpers/errors'
 
 export default function useVoteToClose() {
-  const provider = useAnchorProvider();
-  const { publicKey: userPublicKey } = useWallet();
+  const provider = useAnchorProvider()
+  const { account } = useWalletUi()
 
-  const transactionToast = useTransactionToast();
-  const queryClient = useQueryClient();
+  const transactionToast = useTransactionToast()
+  const queryClient = useQueryClient()
 
-  const programId = getKoopaProgramId();
-  const program = useMemo(
-    () => getKoopaProgram(provider, programId),
-    [provider, programId]
-  );
+  const programId = getKoopaProgramId()
+  const program = useMemo(() => getKoopaProgram(provider, programId), [provider, programId])
 
   const [globalStatePDA] = useMemo(
-    () =>
-      PublicKey.findProgramAddressSync(
-        [Buffer.from("global-state")],
-        programId
-      ),
-    [programId]
-  );
+    () => PublicKey.findProgramAddressSync([Buffer.from('global-state')], programId),
+    [programId],
+  )
 
+  const userPublicKey = account?.publicKey
   const { mutateAsync: vote, isPending } = useMutation({
     mutationFn: async (ajoGroup: string) => {
-      if (!userPublicKey) throw new Error("Wallet not connected");
+      if (!userPublicKey) throw new Error('Wallet not connected')
 
-      const ajoGroupPDA = new PublicKey(ajoGroup);
+      const ajoGroupPDA = new PublicKey(ajoGroup)
 
       try {
         // Using the direct Anchor pattern
@@ -51,53 +43,52 @@ export default function useVoteToClose() {
             globalState: globalStatePDA,
             systemProgram: SystemProgram.programId,
           })
-          .rpc();
+          .rpc()
 
         // Show toast notification
-        transactionToast(signature);
+        transactionToast(signature)
         queryClient.invalidateQueries({
-          queryKey: ["ajo-group", ajoGroup],
-        });
+          queryKey: ['ajo-group', ajoGroup],
+        })
 
-        return { signature };
+        return { signature }
       } catch (error) {
-        handleOnchainError(error);
-        throw error;
+        handleOnchainError(error)
+        throw error
       }
     },
-  });
+  })
 
   const { mutateAsync: voteActivity, isPending: loading } = useMutation({
-    mutationKey: ["vote-activity-db-call"],
-    mutationFn: async (data: AddActivityData) =>
-      query.post("activities", { body: data }),
+    mutationKey: ['vote-activity-db-call'],
+    mutationFn: async (data: AddActivityData) => query.post('activities', { body: data }),
     onSuccess({ ok, error }) {
       if (ok) {
         toast.success(
-          "Vote, to close the Ajo group has been successful. Please look out for when these votes reach minimum threshold to claim a refund"
-        );
+          'Vote, to close the Ajo group has been successful. Please look out for when these votes reach minimum threshold to claim a refund',
+        )
         queryClient.invalidateQueries({
-          queryKey: ["activities", userPublicKey?.toBase58()],
-        });
+          queryKey: ['activities', userPublicKey?.toBase58()],
+        })
       } else {
-        toast.error(error);
+        toast.error(error ?? 'An error occured while trying to vote to close Ajo Group')
       }
     },
     onError(error) {
-      toast.error(error.message);
+      toast.error(error.message)
     },
-  });
+  })
 
   async function closeAjoGroup(pda: string, name: string) {
-    const { signature } = await vote(pda);
+    const { signature } = await vote(pda)
     const joinData: AddActivityData = {
       title: `Voted to close ${name}`,
       type: ActivityType.create,
       sig: signature,
       group_pda: pda,
-    };
-    await voteActivity(joinData);
+    }
+    await voteActivity(joinData)
   }
 
-  return { closeAjoGroup, isPending, loading };
+  return { closeAjoGroup, isPending, loading }
 }

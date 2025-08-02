@@ -1,3 +1,5 @@
+import { useWalletUi } from '@/components/solana/use-wallet-ui'
+import { AnchorProvider, Wallet } from '@coral-xyz/anchor'
 import { Connection, type ConnectionConfig } from '@solana/web3.js'
 import React, { createContext, type ReactNode, useContext, useMemo } from 'react'
 import { useCluster } from './cluster-provider'
@@ -26,4 +28,13 @@ export function useSolana(): SolanaProviderState {
 
 export function useConnection(): Connection {
   return useSolana().connection
+}
+
+export function useAnchorProvider() {
+  const connection = useConnection()
+  const { account } = useWalletUi()
+
+  return new AnchorProvider(connection, account as unknown as Wallet, {
+    commitment: 'confirmed',
+  })
 }
