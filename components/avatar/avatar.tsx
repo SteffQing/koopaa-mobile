@@ -1,18 +1,26 @@
+import avatar1 from '@/assets/avatars/1.png'
+import avatar2 from '@/assets/avatars/2.png'
+import avatar3 from '@/assets/avatars/3.png'
+import avatar4 from '@/assets/avatars/4.png'
+import avatar5 from '@/assets/avatars/5.png'
+import avatar6 from '@/assets/avatars/6.png'
+import avatar7 from '@/assets/avatars/7.png'
+import avatar8 from '@/assets/avatars/8.png'
+import avatar9 from '@/assets/avatars/9.png'
 import getTheme from '@/constants/theme'
 import useParticipant from '@/hooks/db/useParticipant'
-import { Image, StyleSheet, useColorScheme, View } from 'react-native'
+import { Image, ImageSourcePropType, StyleSheet, useColorScheme, View } from 'react-native'
 
-// Import avatar images using require (adjust paths if needed)
-const avatarImage: Record<number, any> = {
-  1: require('@/assets/avatars/1.png'),
-  2: require('@/assets/avatars/2.png'),
-  3: require('@/assets/avatars/3.png'),
-  4: require('@/assets/avatars/4.png'),
-  5: require('@/assets/avatars/5.png'),
-  6: require('@/assets/avatars/6.png'),
-  7: require('@/assets/avatars/7.png'),
-  8: require('@/assets/avatars/8.png'),
-  9: require('@/assets/avatars/9.png'),
+const avatarImage: Record<number, ImageSourcePropType> = {
+  1: avatar1,
+  2: avatar2,
+  3: avatar3,
+  4: avatar4,
+  5: avatar5,
+  6: avatar6,
+  7: avatar7,
+  8: avatar8,
+  9: avatar9,
 }
 
 const avatarColors: Record<number, string> = {

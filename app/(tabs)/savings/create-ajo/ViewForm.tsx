@@ -1,10 +1,10 @@
-import { StyleSheet, View, Text } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
-import LinearGradient from 'react-native-linear-gradient'
-import { useState } from 'react'
 import { Button, SwitchButton } from '@/components/ui'
+import { type CreateAjoGroupFormValues } from '@/constants/schema'
 import useCreateAjoGroup from '@/hooks/blockchain/write/useCreateAjoGroup'
-import { CreateAjoGroupFormValues } from './schema'
+import { useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 interface ViewAndSubmitFormProps extends CreateAjoGroupFormValues {}
 

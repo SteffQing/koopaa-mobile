@@ -1,11 +1,10 @@
-import { StyleSheet, View, Text, TextInput } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
-import { useForm, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '@/components/ui'
 import { ImageSelector, TagSelector } from '@/components/selector'
-import { createAjoGroupSchema, type CreateAjoGroupFormValues } from './schema'
-import { payoutIntervals, contributionIntervals, tagOptions } from '@/lib/static'
+import { Button } from '@/components/ui'
+import { type CreateAjoGroupFormValues } from '@/constants/schema'
+import { contributionIntervals, payoutIntervals, tagOptions } from '@/lib/static'
+import { Controller, useForm } from 'react-hook-form'
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 interface CreateAjoGroupFormProps {
   onSubmit: (data: CreateAjoGroupFormValues) => void
@@ -32,13 +31,15 @@ const createAjoGroupFormStyle = StyleSheet.create({
   intervalText: { fontSize: 16 },
 })
 
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
+
 const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateAjoGroupFormValues>({
-    resolver: zodResolver(createAjoGroupSchema),
+    // resolver: zodResolver(createAjoGroupSchema),
     defaultValues: {
       name: '',
       description: '',
@@ -79,7 +80,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
   return (
     <Animated.View style={[createAjoGroupFormStyle.container, itemStyle]}>
       <View style={createAjoGroupFormStyle.field}>
-        <Label style={createAjoGroupFormStyle.label}>Group Name</Label>
+        <label style={createAjoGroupFormStyle.label}>Group Name</label>
         <Controller
           name="name"
           control={control}
@@ -96,7 +97,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
       </View>
 
       <View style={createAjoGroupFormStyle.field}>
-        <Label style={createAjoGroupFormStyle.label}>Group Description</Label>
+        <label style={createAjoGroupFormStyle.label}>Group Description</label>
         <Controller
           name="description"
           control={control}
@@ -114,7 +115,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
       </View>
 
       <View style={createAjoGroupFormStyle.field}>
-        <Label style={createAjoGroupFormStyle.label}>Group Cover Photo</Label>
+        <label style={createAjoGroupFormStyle.label}>Group Cover Photo</label>
         <Controller
           name="group_cover_photo"
           control={control}
@@ -123,7 +124,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
       </View>
 
       <View style={createAjoGroupFormStyle.field}>
-        <Label style={createAjoGroupFormStyle.label}>Group Category</Label>
+        <label style={createAjoGroupFormStyle.label}>Group Category</label>
         <Controller
           name="tag"
           control={control}
@@ -133,7 +134,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
       </View>
 
       <View style={createAjoGroupFormStyle.field}>
-        <Label style={createAjoGroupFormStyle.label}>Contribution Amount</Label>
+        <label style={createAjoGroupFormStyle.label}>Contribution Amount</label>
         <Controller
           name="contribution_amount"
           control={control}
@@ -153,7 +154,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
       </View>
 
       <View style={createAjoGroupFormStyle.field}>
-        <Label style={createAjoGroupFormStyle.label}>Security Deposit</Label>
+        <label style={createAjoGroupFormStyle.label}>Security Deposit</label>
         <Controller
           name="security_deposit"
           control={control}
@@ -173,7 +174,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
       </View>
 
       <View style={createAjoGroupFormStyle.field}>
-        <Label style={createAjoGroupFormStyle.label}>Maximum Participants</Label>
+        <label style={createAjoGroupFormStyle.label}>Maximum Participants</label>
         <Controller
           name="max_participants"
           control={control}
@@ -193,7 +194,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
       </View>
 
       <View style={createAjoGroupFormStyle.field}>
-        <Label style={createAjoGroupFormStyle.label}>Contribution Interval</Label>
+        <label style={createAjoGroupFormStyle.label}>Contribution Interval</label>
         <View style={createAjoGroupFormStyle.intervalContainer}>
           <Controller
             name="contribution_interval"
@@ -201,7 +202,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
             render={({ field }) => (
               <>
                 {contributionIntervals.map((interval) => (
-                  <Animated.TouchableOpacity
+                  <AnimatedTouchableOpacity
                     key={interval.value}
                     style={[
                       createAjoGroupFormStyle.intervalButton,
@@ -213,7 +214,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
                     onPressOut={handlePressOut}
                   >
                     <Text style={createAjoGroupFormStyle.intervalText}>{interval.label}</Text>
-                  </Animated.TouchableOpacity>
+                  </AnimatedTouchableOpacity>
                 ))}
               </>
             )}
@@ -225,7 +226,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
       </View>
 
       <View style={createAjoGroupFormStyle.field}>
-        <Label style={createAjoGroupFormStyle.label}>Payout Interval</Label>
+        <label style={createAjoGroupFormStyle.label}>Payout Interval</label>
         <View style={createAjoGroupFormStyle.intervalContainer}>
           <Controller
             name="payout_interval"
@@ -233,7 +234,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
             render={({ field }) => (
               <>
                 {payoutIntervals.map((interval) => (
-                  <Animated.TouchableOpacity
+                  <AnimatedTouchableOpacity
                     key={interval.value}
                     style={[
                       createAjoGroupFormStyle.intervalButton,
@@ -245,7 +246,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
                     onPressOut={handlePressOut}
                   >
                     <Text style={createAjoGroupFormStyle.intervalText}>{interval.label}</Text>
-                  </Animated.TouchableOpacity>
+                  </AnimatedTouchableOpacity>
                 ))}
               </>
             )}

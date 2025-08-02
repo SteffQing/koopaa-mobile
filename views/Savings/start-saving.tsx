@@ -1,4 +1,7 @@
-import { Link } from 'expo-router'
+import piggybank from '@/assets/public/coins/piggybank.png'
+import squad from '@/assets/public/koopaa-squad.png'
+import vault from '@/assets/public/vault.png'
+import { Link, RelativePathString } from 'expo-router'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -9,23 +12,23 @@ const savingOptions = [
     description: 'Achieve your goals with this saving method',
     color: ['#D4FFAB', '#D4FFAB'],
     path: '#',
-    image: require('@/assets/public/coins/piggybank.png'),
+    image: piggybank,
   },
   {
     title: 'Create an Ajo Group',
     description: 'Achieve your goals faster with group saving method',
     color: ['#ABEBFF', '#ABEBFF'],
     path: '/savings/create-ajo',
-    image: require('@/assets/public/koopaa-squad.png'),
+    image: squad,
   },
   {
     title: 'Defi Yield savings',
     description: 'View your active Ajo groups and track progress',
     color: ['#F3BD9A', '#F3BD9A'],
     path: '/savings/ajo',
-    image: require('@/assets/public/vault.png'),
+    image: vault,
   },
-] as const
+]
 
 const startSavingStyle = StyleSheet.create({
   container: { marginVertical: 24 },
@@ -81,7 +84,7 @@ const StartSaving: React.FC = () => {
           }
 
           return (
-            <Link key={index} href={option.path} asChild>
+            <Link key={index} href={option.path as RelativePathString} asChild>
               <TouchableOpacity disabled={option.path === '#'} onPressIn={handlePressIn} onPressOut={handlePressOut}>
                 <Animated.View style={[startSavingStyle.card, animatedCardStyle]}>
                   <LinearGradient colors={option.color} style={{ flex: 1, borderRadius: 8 }}>

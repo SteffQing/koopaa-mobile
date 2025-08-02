@@ -1,12 +1,13 @@
-import { StyleSheet, View, Text, Image } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
-import NavHeader from '@/views/Navigation/nav-header'
-import Card from '@/components/savings-and-wallet/card'
-import GroupCard from '@/views/Savings/group/card'
-import GroupCardSkeleton from '@/views/Savings/group/skeleton'
+import emptyVault from '@/assets/public/empty-vault.png'
 import AjoError from '@/components/error'
+import Card from '@/components/savings-and-wallet/card'
 import { useGetUserAjoSavings } from '@/hooks/blockchain/read/useUserAjoGroups'
 import useUserGroups from '@/hooks/db/useUserGroups'
+import NavHeader from '@/views/Navigation/nav-header'
+import GroupCard from '@/views/Savings/group/card'
+import GroupCardSkeleton from '@/views/Savings/group/skeleton'
+import { Image, StyleSheet, Text, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 const ajoSavingsStyle = StyleSheet.create({
   container: { flex: 1, padding: 16 },
@@ -64,11 +65,7 @@ const AjoSavingsPage: React.FC = () => {
               <Animated.View style={[ajoSavingsStyle.emptyState, emptyStyle]}>
                 <Text style={ajoSavingsStyle.emptyText}>No active Ajo Group found</Text>
                 <View style={ajoSavingsStyle.imageContainer}>
-                  <Image
-                    source={require('@/assets/public/empty-vault.png')}
-                    style={ajoSavingsStyle.image}
-                    resizeMode="contain"
-                  />
+                  <Image source={emptyVault} style={ajoSavingsStyle.image} resizeMode="contain" />
                 </View>
               </Animated.View>
             )}

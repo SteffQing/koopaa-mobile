@@ -1,3 +1,4 @@
+import emptyVault from '@/assets/public/empty-vault.png'
 import Card from '@/components/savings-and-wallet/card'
 import NavHeader from '@/views/Navigation/nav-header'
 import { Feather } from '@expo/vector-icons'
@@ -81,18 +82,14 @@ const IndividualSavingsPage: React.FC = () => {
       <Card amount={0} tab="Savings" type="individual" />
       <Animated.View style={[individualSavingsStyle.emptyState, emptyStyle]}>
         <Animated.View style={[individualSavingsStyle.imageContainer, imageStyle]}>
-          <Image
-            source={require('@/assets/public/empty-vault.png')}
-            style={individualSavingsStyle.image}
-            resizeMode="contain"
-          />
+          <Image source={emptyVault} style={individualSavingsStyle.image} resizeMode="contain" />
         </Animated.View>
         <Text style={individualSavingsStyle.description}>
           You haven't created any solo saving goal. Click on the plus button to get started
         </Text>
       </Animated.View>
       <Animated.View style={[individualSavingsStyle.fab, fabStyle]}>
-        <Link href="/savings/create-goal" asChild>
+        <Link href="/(tabs)/savings/create-goal/page" asChild>
           <AnimatedTouchableOpacity style={fabButtonStyle} onPressIn={handlePressIn} onPressOut={handlePressOut}>
             <Feather name="plus" size={24} color="#FFFFFF" />
           </AnimatedTouchableOpacity>

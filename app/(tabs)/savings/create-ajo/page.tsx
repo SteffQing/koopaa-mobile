@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import CreateAjoGroupForm from './form'
-import { CreateAjoGroupFormValues } from './schema'
+import { type CreateAjoGroupFormValues } from '@/constants/schema'
 import ViewAndSubmitForm from './ViewForm'
 
 const createAjoGroupPageStyle = StyleSheet.create({

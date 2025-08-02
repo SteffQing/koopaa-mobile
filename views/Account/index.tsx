@@ -1,11 +1,12 @@
-import { StyleSheet, View, Text, ImageBackground } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
+import totalCard from '@/assets/public/savings-card/total.png'
 import ActionItems from '@/components/action-items'
 import { Avatar } from '@/components/avatar'
-import AccessSection from './access-section'
-import SecurityAndSupport from './security-support'
-import { PersonalSection } from './personal'
 import { useAuthUser } from '@/hooks/useUser'
+import { ImageBackground, StyleSheet, Text, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import AccessSection from './access-section'
+import PersonalSection from './personal'
+import SecurityAndSupport from './security-support'
 
 const accountPageStyle = StyleSheet.create({
   container: { flex: 1 },
@@ -41,11 +42,7 @@ const AccountPage: React.FC = () => {
   return (
     <View style={accountPageStyle.container}>
       <Animated.View style={animatedStyle}>
-        <ImageBackground
-          source={require('@/assets/public/savings-card/total.png')}
-          style={accountPageStyle.banner}
-          resizeMode="cover"
-        >
+        <ImageBackground source={totalCard} style={accountPageStyle.banner} resizeMode="cover">
           <View style={accountPageStyle.bannerContent}>
             <Avatar size={86} number={user?.avatar} />
             <Text style={accountPageStyle.username}>{user?.username}</Text>
@@ -57,7 +54,7 @@ const AccountPage: React.FC = () => {
         <AccessSection item={item} />
         <PersonalSection item={item} />
         <SecurityAndSupport item={item} />
-        <Animated.View style={[item, { opacity: opacity.value, transform: [{ translateY: y.value }] }]}>
+        <Animated.View style={[{ opacity: opacity.value, transform: [{ translateY: y.value }] }]}>
           <Text style={accountPageStyle.footer}>@2025 KooPaa Tech.</Text>
         </Animated.View>
       </View>

@@ -1,6 +1,6 @@
 import { AppText } from '@/components/app-text'
 import { AppView } from '@/components/app-view'
-import { useAuth } from '@/components/auth/auth-provider'
+import { useAuth } from '@/providers/auth-provider'
 import { AppConfig } from '@/constants/app-config'
 import { Button } from '@react-navigation/elements'
 import { Image } from 'expo-image'

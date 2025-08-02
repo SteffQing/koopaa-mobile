@@ -1,6 +1,7 @@
 import Copy from '@/assets/svgs/copy.svg'
 import { Avatar, AvatarPicker } from '@/components/avatar'
 import { Skeleton } from '@/components/skeletons'
+import toast from '@/components/toast'
 import { useAuthUser } from '@/hooks/useUser'
 import { useModal } from '@/providers/modal-provider'
 import { ellipsify } from '@/utils/ellipsify'
@@ -8,7 +9,6 @@ import NavHeader from '@/views/Navigation/nav-header'
 import { Feather } from '@expo/vector-icons'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
-import Toast from 'react-native-toast-message'
 import EditField from './EditField'
 
 const profilePageStyle = StyleSheet.create({
@@ -62,9 +62,10 @@ const ProfilePage: React.FC = () => {
 
   const copyWalletAddress = async () => {
     if (user?.address) {
-      const Clipboard = require('expo-clipboard')
-      await Clipboard.setStringAsync(user.address)
-      Toast.show({ type: 'success', text1: 'Wallet address copied to clipboard' })
+      // const Clipboard = require('expo-clipboard')
+      // await Clipboard.setStringAsync(user.address)
+
+      toast.success('Wallet address copied to clipboard')
     }
   }
 

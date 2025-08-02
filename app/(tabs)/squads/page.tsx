@@ -1,3 +1,4 @@
+import cleanSquad from '@/assets/public/koopa_clean_squad.png'
 import { Button } from '@/components/ui'
 import { Image, StyleSheet, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
@@ -74,11 +75,7 @@ const SquadsPage: React.FC = () => {
             <LinearGradient colors={['#FDBA74', '#F97316']} style={{ flex: 1, borderRadius: 9999 }} />
           </Animated.View>
           <Animated.View style={[squadsPageStyle.imageWrapper, floatStyle]}>
-            <Image
-              source={require('@/assets/public/koopa_clean_squad.png')}
-              style={squadsPageStyle.image}
-              resizeMode="contain"
-            />
+            <Image source={cleanSquad} style={squadsPageStyle.image} resizeMode="contain" />
           </Animated.View>
         </Animated.View>
         <Animated.View style={[squadsPageStyle.textContainer, containerStyle]}>

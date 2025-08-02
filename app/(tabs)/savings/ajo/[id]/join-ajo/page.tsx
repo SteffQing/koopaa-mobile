@@ -1,11 +1,11 @@
 import AjoError from '@/components/error'
 import { EnhancedInvitationModal } from '@/components/modal'
+import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import useGetAjoGroup from '@/hooks/blockchain/read/useFetchAjoGroup'
 import { useSession } from '@/hooks/useSession'
 import { useModal } from '@/providers/modal-provider'
 import AjoGroup from '@/views/AjoGroup'
 import NavHeader from '@/views/Navigation/nav-header'
-import { useWallet } from '@solana/wallet-adapter-react'
 import { useRouter } from 'expo-router'
 import { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -28,7 +28,7 @@ const JoinAjoGroupPage: React.FC<JoinAjoGroupPageProps> = ({ params, searchParam
   const router = useRouter()
   const { data, isLoading, error, refetch } = useGetAjoGroup(id)
   const { session } = useSession()
-  const { publicKey } = useWallet()
+  const { account } = useWalletUi()
   const { showModal, hideModal } = useModal()
 
   const openInvitationModal = (name: string, fee: number) => {
@@ -48,7 +48,7 @@ const JoinAjoGroupPage: React.FC<JoinAjoGroupPageProps> = ({ params, searchParam
         openInvitationModal(data.name, data.securityDeposit)
       }
     }
-  }, [data, session, publicKey])
+  }, [data, session, account])
 
   const itemOpacity = useSharedValue(0)
   const itemY = useSharedValue(10)

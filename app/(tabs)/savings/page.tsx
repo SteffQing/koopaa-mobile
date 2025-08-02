@@ -35,7 +35,7 @@ const SavingsPage: React.FC = () => {
       text: 'Coming Soon',
       handler: () => Toast.show({ type: 'info', text1: 'Individual Savings is coming soon' }),
     },
-    { text: 'Topup Saving', handler: () => router.push('/savings/ajo') },
+    { text: 'Topup Saving', handler: () => router.push('/(tabs)/savings/ajo/page') },
   ]
 
   return (

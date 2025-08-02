@@ -1,3 +1,4 @@
+import placeholderImage from '@/assets/images/placeholder.png'
 import Check from '@/assets/svgs/check.svg'
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -72,7 +73,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ images, value, onChange }
                 animatedStyle,
               ]}
             >
-              <Image source={image || require('@/assets/images/placeholder.png')} style={imageSelectorStyle.image} />
+              <Image source={image || placeholderImage} style={imageSelectorStyle.image} />
               {isSelected && (
                 <View style={imageSelectorStyle.selectedOverlay}>
                   <View style={imageSelectorStyle.checkIconWrapper}>

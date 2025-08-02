@@ -1,3 +1,6 @@
+import ajoBg from '@/assets/public/savings-card/ajo.png'
+import individualBg from '@/assets/public/savings-card/individual.png'
+import totalBg from '@/assets/public/savings-card/total.png'
 import ArrowDown from '@/assets/svgs/arrow-down.svg'
 import ArrowUp from '@/assets/svgs/arrow-up.svg'
 import Refresh from '@/assets/svgs/refresh.svg'
@@ -9,15 +12,23 @@ import useGetRate from '@/hooks/useGetRate'
 import { useModal } from '@/providers/modal-provider'
 import { Feather } from '@expo/vector-icons'
 import { useEffect, useState } from 'react'
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native'
+import {
+  ImageBackground,
+  ImageSourcePropType,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import FormattedBalance from './format-balance'
 import { Currency, SavingsType, Tab } from './types'
 
-const bgMap: Record<SavingsType, any> = {
-  total: require('@/assets/public/savings-card/total.png'),
-  individual: require('@/assets/public/savings-card/individual.png'),
-  ajo: require('@/assets/public/savings-card/ajo.png'),
+const bgMap: Record<SavingsType, ImageSourcePropType> = {
+  total: totalBg,
+  individual: individualBg,
+  ajo: ajoBg,
 }
 
 const titleMap: Record<SavingsType, string> = {

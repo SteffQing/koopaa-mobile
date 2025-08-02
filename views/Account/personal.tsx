@@ -1,11 +1,11 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
-import { Link } from 'expo-router'
-import { Feather } from '@expo/vector-icons'
 import Profile from '@/assets/svgs/account/security-support/profile.svg'
+import { Feather } from '@expo/vector-icons'
+import { Link } from 'expo-router'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { VariantProps } from './types'
 
-interface PersonalSectionProps extends VariantProps {
+interface PersonalSectionProps extends Partial<VariantProps> {
   item?: { hidden: { opacity: number; y: number }; show: { opacity: number; y: number } }
 }
 
@@ -45,7 +45,7 @@ const PersonalSection: React.FC<PersonalSectionProps> = ({ item }) => {
       <Text style={personalSectionStyle.title}>Personal</Text>
       <View style={personalSectionStyle.card}>
         <View style={personalSectionStyle.inner}>
-          <Link href="/account/profile" asChild>
+          <Link href="/(tabs)/account/profile/page" asChild>
             <TouchableOpacity>
               <View style={personalSectionStyle.row}>
                 <View style={personalSectionStyle.content}>

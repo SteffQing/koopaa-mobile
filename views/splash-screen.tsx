@@ -1,3 +1,4 @@
+import splash from '@/assets/public/splash-screen.png'
 import { ImageBackground, StyleSheet } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
@@ -17,11 +18,7 @@ const SplashScreen: React.FC = () => {
   scale.value = withTiming(1, { duration: 700 })
 
   return (
-    <ImageBackground
-      source={require('@/assets/public/splash-screen.png')}
-      style={splashScreenStyle.container}
-      resizeMode="contain"
-    >
+    <ImageBackground source={splash} style={splashScreenStyle.container} resizeMode="contain">
       <Animated.View style={[splashScreenStyle.container, animatedStyle]}>
         {/* Inner content placeholder (empty in original) */}
       </Animated.View>

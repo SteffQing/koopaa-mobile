@@ -1,3 +1,5 @@
+import groupImage from '@/assets/public/quick-access/public-group.png'
+import soloImage from '@/assets/public/quick-access/solo.png'
 import type { SavingsData } from '@/components/savings-and-wallet/types'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -46,11 +48,7 @@ const Savings: React.FC<SavingsProps> = ({ savingsData }) => {
           <View key={index} style={[savingsStyle.row, index === savingsData.length - 1 ? savingsStyle.lastRow : {}]}>
             <View style={savingsStyle.content}>
               <Image
-                source={
-                  item.type === 'individual'
-                    ? require('@/assets/public/quick-access/solo.png')
-                    : require('@/assets/public/quick-access/public-group.png')
-                }
+                source={item.type === 'individual' ? soloImage : groupImage}
                 style={savingsStyle.image}
                 resizeMode="cover"
               />

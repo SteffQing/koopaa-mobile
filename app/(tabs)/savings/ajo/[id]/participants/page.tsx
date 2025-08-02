@@ -1,7 +1,7 @@
 import AjoError from '@/components/error'
+import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import useGetAjoGroup from '@/hooks/blockchain/read/useFetchAjoGroup'
 import NavHeader from '@/views/Navigation/nav-header'
-import { useWallet } from '@solana/wallet-adapter-react'
 import { StyleSheet, View } from 'react-native'
 import Participant from './Participant'
 import ParticipantsListSkeleton from './Skeleton'
@@ -34,7 +34,7 @@ function calculatePayoutDate(
 const GroupMembersPage: React.FC<GroupMembersPageProps> = ({ params }) => {
   const { id } = params
   const { data, isLoading, error, refetch } = useGetAjoGroup(id)
-  const { publicKey } = useWallet()
+  const { account } = useWalletUi()
 
   return (
     <View style={groupMembersStyle.container}>
@@ -56,7 +56,7 @@ const GroupMembersPage: React.FC<GroupMembersPageProps> = ({ params }) => {
                 data.numParticipants,
               )}
               isNext={data.payoutRound % data.numParticipants === idx}
-              isYou={publicKey?.toBase58() === participant}
+              isYou={account?.publicKey?.toBase58() === participant}
               index={idx}
               key={participant}
             />
