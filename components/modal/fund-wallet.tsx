@@ -1,12 +1,11 @@
-import AlertCircle from '@/assets/svgs/alert-circle.svg'
+import AlertCircle from '@/assets/svgs/bell.svg'
 import Copy from '@/assets/svgs/copy.svg'
 import getTheme from '@/constants/theme'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { StyleSheet, Text, TextInput, TouchableOpacity, useColorScheme, View } from 'react-native'
 import { Circle, Svg, Text as SvgText } from 'react-native-svg'
-import { ErrorToast, SuccessToast } from 'react-native-toast-message'
 import { useWalletUi } from '../solana/use-wallet-ui'
-// import { toast } from 'react-native-toast-message'
+import toast from '../toast'
 
 const fundWalletModalStyle = StyleSheet.create({
   container: {
@@ -86,14 +85,10 @@ const FundWalletModal: React.FC = () => {
 
   const copyWalletAddress = () => {
     if (!publicKey) {
-      ErrorToast({
-        text1: 'No wallet seems to be connected',
-      })
+      toast.error('No wallet seems to be connected')
     } else {
       Clipboard.setString(publicKey.toBase58())
-      SuccessToast({
-        text1: 'Wallet address copied to clipboard',
-      })
+      toast.success('Wallet address copied to clipboard')
     }
   }
 

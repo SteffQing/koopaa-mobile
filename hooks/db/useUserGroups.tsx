@@ -1,11 +1,12 @@
+import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import query from '@/lib/fetch'
-import { useWallet } from '@solana/wallet-adapter-react'
 import { useQuery } from '@tanstack/react-query'
 
 export type GroupAndParticipants = Group & { participants: User[] }
 
 export default function useUserGroups() {
-  const { publicKey } = useWallet()
+  const { account } = useWalletUi()
+  const publicKey = account?.publicKey
   return useQuery({
     queryKey: ['ajo-groups', publicKey?.toBase58()],
     queryFn: async () =>

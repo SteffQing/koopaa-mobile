@@ -1,4 +1,4 @@
-import Profile from '@/assets/svgs/account/security-support/profile.svg'
+import Profile from '@/assets/svgs/account/profile.svg'
 import { Feather } from '@expo/vector-icons'
 import { Link } from 'expo-router'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'

@@ -1,5 +1,5 @@
+import { useAuth } from '@/providers/auth-provider'
 import { SplashScreen } from 'expo-router'
-import { useAuth } from '@/components/auth/auth-provider'
 
 export function AppSplashController() {
   const { isLoading } = useAuth()

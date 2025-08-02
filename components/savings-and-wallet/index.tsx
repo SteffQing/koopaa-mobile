@@ -29,12 +29,12 @@ const SavingsAndWallet: React.FC<SavingsAndWalletProps> = () => {
   const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }))
 
   const savingsAction = [
-    { text: 'Start Saving', handler: () => router.push('/savings') },
+    { text: 'Start Saving', handler: () => router.push('/(tabs)/savings/page') },
     {
       text: 'Coming Soon',
       handler: () => Toast.show({ type: 'info', text1: 'Individual Savings is coming soon' }),
     },
-    { text: 'Topup Savings', handler: () => router.push('/savings/ajo') },
+    { text: 'Topup Savings', handler: () => router.push('/(tabs)/savings/ajo/page') },
   ]
 
   const savingsData: SavingsData[] = [

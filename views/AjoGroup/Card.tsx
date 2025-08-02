@@ -5,6 +5,7 @@ import useContribute from '@/hooks/blockchain/write/useContribute'
 import useGetRate from '@/hooks/useGetRate'
 import query from '@/lib/fetch'
 import { Feather } from '@expo/vector-icons'
+import Clipboard from '@react-native-clipboard/clipboard'
 import { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withRepeat, withTiming } from 'react-native-reanimated'
@@ -166,8 +167,7 @@ const Invite: React.FC<{ pda: string }> = ({ pda }) => {
       const { data, error } = await query.post<string>('', { body: { pda } })
       Toast.hide()
       if (data) {
-        const Clipboard = require('expo-clipboard')
-        await Clipboard.setStringAsync(data)
+        Clipboard.setString(data)
         Toast.show({
           type: 'success',
           text1: `Invite link copied! Share with friends to join Ajo Group`,

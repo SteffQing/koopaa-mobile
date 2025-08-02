@@ -7,7 +7,7 @@ import GroupCard from '@/views/Savings/group/card'
 import GroupCardSkeleton from '@/views/Savings/group/skeleton'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import emptyVault from '../../../../assets/public/empty-vault.png'
+import emptyVault from '../../../../assets/empty-vault.png'
 
 const ajoSavingsStyle = StyleSheet.create({
   container: { flex: 1, padding: 16 },

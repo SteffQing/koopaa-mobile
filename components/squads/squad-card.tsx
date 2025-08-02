@@ -1,4 +1,4 @@
-import { Link } from 'expo-router'
+import { Link, RelativePathString } from 'expo-router'
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { Avatar } from '../avatar'
@@ -109,7 +109,10 @@ const SquadCard: React.FC<SquadCardProps> = ({ squad }) => {
 
   return (
     <Animated.View style={[squadCardStyle.container, animatedStyle]}>
-      <Link href={`/savings/ajo/${squad.name.toLowerCase().replace(/\s+/g, '-')}/join-ajo`} asChild>
+      <Link
+        href={`/savings/ajo/${squad.name.toLowerCase().replace(/\s+/g, '-')}/join-ajo` as RelativePathString}
+        asChild
+      >
         <TouchableOpacity onPressIn={handlePressIn} onPressOut={handlePressOut}>
           <View style={squadCardStyle.card}>
             <View style={squadCardStyle.avatarContainer}>

@@ -5,6 +5,10 @@ import { contributionIntervals, payoutIntervals, tagOptions } from '@/lib/static
 import { Controller, useForm } from 'react-hook-form'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import groupCover1 from '../../../../assets/public/group-cover/1.png'
+import groupCover2 from '../../../../assets/public/group-cover/2.png'
+import groupCover3 from '../../../../assets/public/group-cover/3.png'
+import groupCover4 from '../../../../assets/public/group-cover/4.png'
 
 interface CreateAjoGroupFormProps {
   onSubmit: (data: CreateAjoGroupFormValues) => void
@@ -75,7 +79,7 @@ const CreateAjoGroupForm: React.FC<CreateAjoGroupFormProps> = ({ onSubmit }) => 
   }
 
   // Cover photo options (using indices for compatibility with ImageSelector)
-  const coverPhotos = [1, 2, 3, 4]
+  const coverPhotos = [groupCover1, groupCover2, groupCover3, groupCover4]
 
   return (
     <Animated.View style={[createAjoGroupFormStyle.container, itemStyle]}>

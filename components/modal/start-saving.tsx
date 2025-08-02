@@ -121,7 +121,7 @@ const GroupTargetModal: React.FC = () => {
           style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}
           onPress={() => {
             hideModal()
-            router.push('/savings/create-ajo')
+            router.push('/(tabs)/savings/create-ajo/page')
           }}
         >
           <View style={groupTargetModalStyle.cardContent}>

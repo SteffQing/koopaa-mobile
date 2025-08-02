@@ -1,9 +1,10 @@
-import { Button } from '@/components/ui'
 import getTheme from '@/constants/theme'
-import { useWallet } from '@solana/wallet-adapter-react'
 import { useEffect } from 'react'
-import { Image, Linking, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native'
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import { StyleSheet, Text, useColorScheme, View } from 'react-native'
+import { useSharedValue, withTiming } from 'react-native-reanimated'
+import { useWalletUi } from '../solana/use-wallet-ui'
+import { WalletUiButtonConnect } from '../solana/wallet-ui-button-connect'
+import { WalletUiButtonDisconnect } from '../solana/wallet-ui-button-disconnect'
 
 const connectWalletModalStyle = StyleSheet.create({
   container: {
@@ -81,16 +82,15 @@ const connectWalletModalStyle = StyleSheet.create({
 const ConnectWalletModal: React.FC = () => {
   const colorScheme = useColorScheme()
   const theme = getTheme(colorScheme || 'light')
-  const { select, wallets, publicKey, disconnect } = useWallet()
+  const { account } = useWalletUi()
 
   const buttonY = useSharedValue(-2)
-  const buttonAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: buttonY.value }],
-  }))
 
   useEffect(() => {
     buttonY.value = withTiming(0, { duration: 200 })
   }, [])
+
+  const publicKey = account?.publicKey
 
   if (publicKey) {
     return (
@@ -101,19 +101,10 @@ const ConnectWalletModal: React.FC = () => {
             {publicKey.toBase58()}
           </Text>
         </View>
-        <Button
-          onPress={disconnect}
-          variant="destructive"
-          style={{ backgroundColor: theme.destructive }}
-          textStyle={{ color: '#FFFFFF' }}
-        >
-          Disconnect Wallet
-        </Button>
+        <WalletUiButtonDisconnect />
       </View>
     )
   }
-
-  const installedWallets = wallets.filter((wallet) => wallet.readyState === 'Installed')
 
   return (
     <View style={connectWalletModalStyle.container}>
@@ -122,55 +113,7 @@ const ConnectWalletModal: React.FC = () => {
         Get started by connecting your preferred wallet below.
       </Text>
       <View style={{ marginBottom: 16 }}>
-        {installedWallets.length > 0 ? (
-          installedWallets.map((wallet) => (
-            <Animated.View
-              key={wallet.adapter.name}
-              style={[
-                connectWalletModalStyle.walletButton,
-                { borderColor: theme.gray300, backgroundColor: theme.cardBackground },
-                buttonAnimatedStyle,
-              ]}
-            >
-              <TouchableOpacity
-                onPress={() => select(wallet.adapter.name)}
-                style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}
-              >
-                <View style={connectWalletModalStyle.walletContent}>
-                  {wallet.adapter.icon && (
-                    <Image
-                      source={{ uri: wallet.adapter.icon || 'placeholder.svg' }}
-                      style={connectWalletModalStyle.walletIcon}
-                    />
-                  )}
-                  <Text style={[connectWalletModalStyle.walletText, { color: theme.textPrimary }]}>
-                    Connect with {wallet.adapter.name}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </Animated.View>
-          ))
-        ) : (
-          <View style={connectWalletModalStyle.noWalletSection}>
-            <View style={connectWalletModalStyle.noWalletCard}>
-              <Text style={[connectWalletModalStyle.noWalletText, { color: theme.textSecondary }]}>
-                No wallets found
-              </Text>
-              <Text style={[connectWalletModalStyle.noWalletText, { color: theme.textSecondary }]}>
-                Please install a Solana wallet to continue
-              </Text>
-            </View>
-            <Animated.View style={buttonAnimatedStyle}>
-              <Button
-                onPress={() => Linking.openURL('https://solana.com/ecosystem/wallets')}
-                style={{ borderColor: theme.gray300, backgroundColor: theme.cardBackground }}
-                textStyle={{ color: theme.textPrimary }}
-              >
-                Get a Wallet
-              </Button>
-            </Animated.View>
-          </View>
-        )}
+        <WalletUiButtonConnect />
       </View>
       <View style={connectWalletModalStyle.infoSection}>
         <Text style={[connectWalletModalStyle.infoTitle, { color: theme.textPrimary }]}>What is a wallet?</Text>
