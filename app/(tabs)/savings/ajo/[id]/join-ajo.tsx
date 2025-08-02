@@ -9,7 +9,7 @@ import NavHeader from '@/views/Navigation/nav-header'
 import { useRouter } from 'expo-router'
 import { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
+// import LinearGradient from 'react-native-linear-gradient'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 interface JoinAjoGroupPageProps {
@@ -64,7 +64,7 @@ const JoinAjoGroupPage: React.FC<JoinAjoGroupPageProps> = ({ params, searchParam
     <View style={joinAjoGroupPageStyle.container}>
       <NavHeader path="/savings" header={data?.name ?? 'Ajo Group'} />
       <Animated.View style={[joinAjoGroupPageStyle.imageContainer, itemStyle]}>
-        <LinearGradient colors={['#3B82F6', '#7C3AED']} style={{ flex: 1 }} />
+        {/* <LinearGradient colors={['#3B82F6', '#7C3AED']} style={{ flex: 1 }} /> */}
       </Animated.View>
       {error ? (
         <AjoError onRetry={refetch} message={error.message} />

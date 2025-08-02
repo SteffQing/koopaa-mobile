@@ -1,6 +1,6 @@
 import { Link, RelativePathString } from 'expo-router'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+// import LinearGradient from 'react-native-linear-gradient'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import piggybank from '../../assets/coins/piggybank.png'
 import squad from '../../assets/koopaa-squad.png'
@@ -87,7 +87,7 @@ const StartSaving: React.FC = () => {
             <Link key={index} href={option.path as RelativePathString} asChild>
               <TouchableOpacity disabled={option.path === '#'} onPressIn={handlePressIn} onPressOut={handlePressOut}>
                 <Animated.View style={[startSavingStyle.card, animatedCardStyle]}>
-                  <LinearGradient colors={option.color} style={{ flex: 1, borderRadius: 8 }}>
+                  {/* <LinearGradient colors={option.color} style={{ flex: 1, borderRadius: 8 }}>
                     <View style={startSavingStyle.content}>
                       <Text style={startSavingStyle.cardTitle}>{option.title}</Text>
                       <Text style={startSavingStyle.description}>{option.description}</Text>
@@ -95,7 +95,7 @@ const StartSaving: React.FC = () => {
                     <View style={startSavingStyle.imageContainer}>
                       <Image source={option.image} style={startSavingStyle.image} resizeMode="contain" />
                     </View>
-                  </LinearGradient>
+                  </LinearGradient> */}
                 </Animated.View>
               </TouchableOpacity>
             </Link>

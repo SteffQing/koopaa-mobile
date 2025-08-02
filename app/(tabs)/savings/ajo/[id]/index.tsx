@@ -1,10 +1,10 @@
 import { StyleSheet, View } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
-import LinearGradient from 'react-native-linear-gradient'
-import NavHeader from '@/views/Navigation/nav-header'
-import AjoGroup from '@/views/AjoGroup'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+// import LinearGradient from 'react-native-linear-gradient'
 import AjoError from '@/components/error'
 import useGetAjoGroup from '@/hooks/blockchain/read/useFetchAjoGroup'
+import AjoGroup from '@/views/AjoGroup'
+import NavHeader from '@/views/Navigation/nav-header'
 
 interface AjoGroupPageProps {
   params: { id: string }
@@ -32,7 +32,7 @@ const AjoGroupPage: React.FC<AjoGroupPageProps> = ({ params }) => {
     <View style={ajoGroupPageStyle.container}>
       <NavHeader path="/savings" header={data?.name ?? 'Ajo Group'} />
       <Animated.View style={[ajoGroupPageStyle.imageContainer, itemStyle]}>
-        <LinearGradient colors={['#3B82F6', '#7C3AED']} style={{ flex: 1 }} />
+        {/* <LinearGradient colors={['#3B82F6', '#7C3AED']} style={{ flex: 1 }} /> */}
       </Animated.View>
       {error ? (
         <AjoError onRetry={refetch} message={error.message} />

@@ -1,6 +1,5 @@
 import ActionItems from '@/components/action-items'
 import RecentActivities from '@/components/activities'
-import SavingsAndWallet from '@/components/savings-and-wallet'
 import SquadDisplay from '@/components/squads'
 import { useGetActivities } from '@/hooks/db/useActivities'
 import { useAuthUser } from '@/hooks/useUser'
@@ -19,7 +18,7 @@ const HomePage: React.FC = () => {
   return (
     <View style={homePageStyle.container}>
       <Header name={user?.username} loading={pending} avatar={user?.avatar} address={user?.address} />
-      <SavingsAndWallet />
+      {/* <SavingsAndWallet /> */}
       <ActionItems user={user} loading={pending} />
       <QuickAccess />
       <SquadDisplay />

@@ -32,6 +32,7 @@ const individualSavingsStyle = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.3)',
     elevation: 8,
   },
 })
@@ -89,7 +90,7 @@ const IndividualSavingsPage: React.FC = () => {
         </Text>
       </Animated.View>
       <Animated.View style={[individualSavingsStyle.fab, fabStyle]}>
-        <Link href="/(tabs)/savings/create-goal/page" asChild>
+        <Link href="/(tabs)/savings/create-goal" asChild>
           <AnimatedTouchableOpacity style={fabButtonStyle} onPressIn={handlePressIn} onPressOut={handlePressOut}>
             <Feather name="plus" size={24} color="#FFFFFF" />
           </AnimatedTouchableOpacity>

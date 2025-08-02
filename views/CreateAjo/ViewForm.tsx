@@ -3,7 +3,7 @@ import { type CreateAjoGroupFormValues } from '@/constants/schema'
 import useCreateAjoGroup from '@/hooks/blockchain/write/useCreateAjoGroup'
 import { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
+// import LinearGradient from 'react-native-linear-gradient'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 interface ViewAndSubmitFormProps extends CreateAjoGroupFormValues {}
@@ -59,7 +59,7 @@ const ViewAndSubmitForm: React.FC<ViewAndSubmitFormProps> = (data) => {
   return (
     <Animated.View style={[viewAndSubmitStyle.container, itemStyle]}>
       <View style={viewAndSubmitStyle.imageContainer}>
-        <LinearGradient colors={['#3B82F6', '#7C3AED']} style={{ flex: 1 }} />
+        {/* <LinearGradient colors={['#3B82F6', '#7C3AED']} style={{ flex: 1 }} /> */}
       </View>
       <View style={viewAndSubmitStyle.detailsContainer}>
         <Entry title="Group Name" content={data.name} />

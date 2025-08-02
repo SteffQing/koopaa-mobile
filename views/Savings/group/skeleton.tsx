@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
+// import LinearGradient from 'react-native-linear-gradient'
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated'
 
 interface GroupCardSkeletonProps {
@@ -52,12 +52,12 @@ const Skeleton: React.FC = () => {
 
   return (
     <Animated.View style={[groupCardSkeletonStyle.card, animatedStyle]}>
-      <LinearGradient colors={['#D1D5DB', '#D1D5DB']} style={groupCardSkeletonStyle.header}>
+      {/* <LinearGradient colors={['#D1D5DB', '#D1D5DB']} style={groupCardSkeletonStyle.header}>
         <View style={groupCardSkeletonStyle.headerContent}>
           <View style={groupCardSkeletonStyle.title} />
           <View style={groupCardSkeletonStyle.tag} />
         </View>
-      </LinearGradient>
+      </LinearGradient> */}
       <View style={groupCardSkeletonStyle.content}>
         <View style={groupCardSkeletonStyle.description}>
           <View style={groupCardSkeletonStyle.descriptionLine1} />

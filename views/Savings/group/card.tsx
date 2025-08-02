@@ -4,7 +4,7 @@ import { formatDate } from '@/lib/date'
 import { tagOptions } from '@/lib/static'
 import { Link } from 'expo-router'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
+// import LinearGradient from 'react-native-linear-gradient'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 interface GroupCardProps {
@@ -76,7 +76,7 @@ const GroupCard: React.FC<GroupCardProps> = ({ group }) => {
     <Link href={`/savings/ajo/${group.pda}`} asChild>
       <TouchableOpacity onPressIn={handlePressIn} onPressOut={handlePressOut}>
         <Animated.View style={[groupCardStyle.card, animatedStyle]}>
-          <LinearGradient colors={['#3B82F6', '#7C3AED']} style={groupCardStyle.header}>
+          {/* <LinearGradient colors={['#3B82F6', '#7C3AED']} style={groupCardStyle.header}>
             <View style={groupCardStyle.headerContent}>
               <Text style={groupCardStyle.title}>{group.name}</Text>
               <AnimatedTouchableOpacity style={[groupCardStyle.tagButton, buttonStyle]}>
@@ -85,7 +85,7 @@ const GroupCard: React.FC<GroupCardProps> = ({ group }) => {
                 </Text>
               </AnimatedTouchableOpacity>
             </View>
-          </LinearGradient>
+          </LinearGradient> */}
           <View style={groupCardStyle.content}>
             <Text style={groupCardStyle.description}>{group.description}</Text>
             <View style={groupCardStyle.statsContainer}>
