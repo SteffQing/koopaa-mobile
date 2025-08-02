@@ -2,9 +2,9 @@ import NavHeader from '@/views/Navigation/nav-header'
 import { useState } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import CreateAjoGroupForm from './form'
+import CreateAjoGroupForm from '@/views/CreateAjo/form'
 import { type CreateAjoGroupFormValues } from '@/constants/schema'
-import ViewAndSubmitForm from './ViewForm'
+import ViewAndSubmitForm from '@/views/CreateAjo/ViewForm'
 
 const createAjoGroupPageStyle = StyleSheet.create({
   container: { flex: 1, padding: 16 },

@@ -1,10 +1,10 @@
 import AjoError from '@/components/error'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import useGetAjoGroup from '@/hooks/blockchain/read/useFetchAjoGroup'
+import Participant from '@/views/AjoParticipant/Participant'
+import ParticipantsListSkeleton from '@/views/AjoParticipant/Skeleton'
 import NavHeader from '@/views/Navigation/nav-header'
 import { StyleSheet, View } from 'react-native'
-import Participant from './Participant'
-import ParticipantsListSkeleton from './Skeleton'
 
 interface GroupMembersPageProps {
   params: { id: string }

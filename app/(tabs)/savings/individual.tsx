@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons'
 import { Link } from 'expo-router'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming } from 'react-native-reanimated'
-import emptyVault from '../../../../assets/empty-vault.png'
+import emptyVault from '../../../assets/empty-vault.png'
 
 const individualSavingsStyle = StyleSheet.create({
   container: { flex: 1, padding: 16 },

@@ -9,7 +9,7 @@ import NavHeader from '@/views/Navigation/nav-header'
 import { Feather } from '@expo/vector-icons'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
-import EditField from './EditField'
+import EditField from '../../../views/Account/EditField'
 
 const profilePageStyle = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F2F2F2' },

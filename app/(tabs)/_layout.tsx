@@ -1,23 +1,7 @@
-import BottomNavbar from '@/views/Navigation/navigation'
-import { Slot } from 'expo-router'
-import { StyleSheet, View } from 'react-native'
-// import AuthGuard from './AuthGuard'
-// import Faucet from "@/components/faucet";
-import Telegram from '@/components/telegram'
-
-// export default function MobileLayout({ children }: Readonly<{ children: ReactNode }>) {
-//   return (
-//     <Suspense fallback={<SplashScreen />}>
-//       {/* <AuthGuard> */}
-//       {children}
-//       <BottomNavbar />
-//       {/* <Faucet /> */}
-//       <Telegram />
-//       {/* </AuthGuard> */}
-//     </Suspense>
-
-//   )
-// }
+import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
+import { Tabs } from 'expo-router'
+import React from 'react'
+import { StyleSheet } from 'react-native'
 
 const layoutStyle = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F2F2F2' },
@@ -25,10 +9,35 @@ const layoutStyle = StyleSheet.create({
 
 export default function TabLayout() {
   return (
-    <View style={layoutStyle.container}>
-      <Slot />
-      <BottomNavbar />
-      <Telegram />
-    </View>
+    // <View style={layoutStyle.container}>
+    //   <Slot />
+    //   <BottomNavbar />
+    //   <Telegram />
+    // </View>
+
+    <Tabs screenOptions={{ headerShown: false }}>
+      {/* <Tabs.Screen name="index" options={{ tabBarItemStyle: { display: 'none' } }} /> */}
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="wallet.pass.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="savings"
+        options={{
+          title: 'Savings',
+          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="gearshape.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title: 'Account',
+          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="ladybug.circle" color={color} />,
+        }}
+      />
+    </Tabs>
   )
 }
