@@ -59,13 +59,23 @@ function RootNavigator() {
   const { isAuthenticated } = useAuth()
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={isAuthenticated}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="+not-found" />
-      </Stack.Protected>
-      <Stack.Protected guard={!isAuthenticated}>
+      {/* <Stack.Protected guard={true}> */}
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="+not-found" />
+      {/* </Stack.Protected> */}
+      {/* <Stack.Protected guard={!isAuthenticated}>
         <Stack.Screen name="login" />
-      </Stack.Protected>
+      </Stack.Protected> */}
     </Stack>
   )
+}
+
+declare global {
+  interface BigInt {
+    toJSON(): string
+  }
+}
+
+BigInt.prototype.toJSON = function () {
+  return this.toString()
 }

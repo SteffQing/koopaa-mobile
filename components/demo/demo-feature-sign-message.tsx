@@ -1,14 +1,12 @@
-import { AppView } from '@/components/app-view'
 import { AppText } from '@/components/app-text'
-import { PublicKey } from '@solana/web3.js'
-import Snackbar from 'react-native-snackbar'
-import { ActivityIndicator, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
-import { Button } from '@react-navigation/elements'
-import { useThemeColor } from '@/hooks/use-theme-color'
-import { useMutation } from '@tanstack/react-query'
+import { AppView } from '@/components/app-view'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
-import { ellipsify } from '@/utils/ellipsify'
+import { useThemeColor } from '@/hooks/use-theme-color'
+import { Button } from '@react-navigation/elements'
+import { PublicKey } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
+import React, { useState } from 'react'
+import { ActivityIndicator, TextInput, View } from 'react-native'
 
 function useSignMessage({ address }: { address: PublicKey }) {
   const { signMessage } = useWalletUi()
@@ -47,18 +45,18 @@ export function DemoFeatureSignMessage({ address }: { address: PublicKey }) {
         ) : (
           <Button
             disabled={signMessage.isPending || message?.trim() === ''}
-            onPress={() => {
-              signMessage
-                .mutateAsync({ message })
-                .then(() => {
-                  console.log(`Signed message: ${message} with ${address.toString()}`)
-                  Snackbar.show({
-                    text: `Signed message with ${ellipsify(address.toString(), 8)}`,
-                    duration: Snackbar.LENGTH_SHORT,
-                  })
-                })
-                .catch((err) => console.log(`Error signing message: ${err}`, err))
-            }}
+            // onPress={() => {
+            //   signMessage
+            //     .mutateAsync({ message })
+            //     .then(() => {
+            //       console.log(`Signed message: ${message} with ${address.toString()}`)
+            //       Snackbar.show({
+            //         text: `Signed message with ${ellipsify(address.toString(), 8)}`,
+            //         duration: Snackbar.LENGTH_SHORT,
+            //       })
+            //     })
+            //     .catch((err) => console.log(`Error signing message: ${err}`, err))
+            // }}
             variant="filled"
           >
             Sign Message

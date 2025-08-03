@@ -1,7 +1,7 @@
 import { AppText } from '@/components/app-text'
 import { AppView } from '@/components/app-view'
-import { useAuth } from '@/providers/auth-provider'
 import { AppConfig } from '@/constants/app-config'
+import { useAuth } from '@/providers/auth-provider'
 import { Button } from '@react-navigation/elements'
 import { Image } from 'expo-image'
 import { router } from 'expo-router'
@@ -38,12 +38,10 @@ export default function SignIn() {
               style={{ marginHorizontal: 16 }}
               onPress={async () => {
                 await signIn()
-                // Navigate after signing in. You may want to tweak this to ensure sign-in is
-                // successful before navigating.
                 router.replace('/')
               }}
             >
-              Connect
+              Connect Wallet
             </Button>
           </View>
         </SafeAreaView>

@@ -9,14 +9,18 @@ const layoutStyle = StyleSheet.create({
 
 export default function TabLayout() {
   return (
-    // <View style={layoutStyle.container}>
-    //   <Slot />
-    //   <BottomNavbar />
-    //   <Telegram />
-    // </View>
-
-    <Tabs screenOptions={{ headerShown: false }}>
-      {/* <Tabs.Screen name="index" options={{ tabBarItemStyle: { display: 'none' } }} /> */}
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarHideOnKeyboard: true,
+        tabBarStyle: {
+          backgroundColor: '#fff',
+          paddingTop: 7,
+          height: 70,
+          paddingBottom: 12,
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
